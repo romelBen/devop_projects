@@ -1,4 +1,4 @@
-# Confidential
+# Confidential files
 *.tfvars
 *.pem
 *.terraform
