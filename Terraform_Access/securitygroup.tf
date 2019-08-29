@@ -27,7 +27,6 @@ resource "aws_security_group" "allow-ssh" {
   }
 }
 
-
 /* # Security group created to ALLOW ingress traffic of 443 (HTTPS)
 resource "aws_security_group" "from_us" {
  name = "from_us"
