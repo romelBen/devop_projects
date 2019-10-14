@@ -11,20 +11,18 @@ resource "aws_route_table" "web-public-rt" {
   }
 }
 
-# Default route table
-resource "aws_default_route_table" "default-route-table" {
-  default_route_table_id = "${aws_vpc.main.id}"
+resource "aws_default_route_table" "default-rt" {
+  default_route_table_id = "${aws_vpc.main.default_route_table_id}"
 }
 
-
-# Assign public subnet to public route table
+# Assign public subnet to public route table 
 resource "aws_route_table_association" "web-public-rt" {
   subnet_id = "${aws_subnet.public_subnet.id}"
-  route_table_id = "${aws_vpc}"
+  route_table_id = "${aws_route_table.web-public-rt.id}"
 }
 
-# Route Associations private
-resource "aws_route_table_association" "default-route" {
+# Assign privatge subnet to private route table
+resource "aws_route_table_association" "db-private-rt" {
   subnet_id = "${aws_subnet.public_subnet.id}"
-  route_table_id = "${aws_eip.nat_gw_eip.id}"
+  route_table_id = "${aws_route_table.web-public-rt}"
 }
