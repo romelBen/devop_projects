@@ -18,15 +18,19 @@ variable "private_subnet_cidr" {
   default = "10.0.2.0/24"
 }
 
-variable "AMIS" {
+variable "AMIS-web" {
     type = "map"
     default = {
-        #These AMIs are Ubuntu
+        # AMI is Ubuntu
         us-east-1 = "ami-0b25b3d814fa986ce"
-        us-east-2 = "ami-0d36f68a8c544bbbe"
-        eu-west-1 = "ami-0406237fdb3437aec"
-        eu-west-2 = "ami-08cad0202d4a23452"
     }
+}
+
+variable "AMIS-db" {
+  type = "map"
+  default = {
+    us-east-1 = "ami-04065317647cd68fc"
+  }
 }
 variable "INSTANCE_USERNAME" {
   default = "ubuntu"
