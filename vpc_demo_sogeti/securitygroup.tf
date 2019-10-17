@@ -22,14 +22,14 @@ resource "aws_security_group" "sg-web" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["64.132.0.202/32"]
+    cidr_blocks = ["208.84.155.228/32"]
   }
 
   ingress {
     from_port = 3389
     to_port = 3389
     protocol = "tcp"
-    cidr_blocks = ["64.132.0.202/32"]
+    cidr_blocks = ["208.84.155.228/32"]
   }
 
   egress { # SQL Server access to db server
@@ -61,7 +61,7 @@ resource "aws_security_group" "sg-db" {
     from_port = 1433
     to_port = 1433
     protocol = "tcp"
-    cidr_blocks = ["${aws_security_group.sg-web}"]
+    cidr_blocks = ["${aws_security_group.sg-web.id}"]
   }
 
   ingress { # MySQL access from the web servers
