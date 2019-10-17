@@ -1,7 +1,7 @@
 # Define security group for public subnet
 resource "aws_security_group" "sg-web" {
   vpc_id = "${aws_vpc.main.id}"
-  name = "vpc_test_web"
+  name = "sg_test_web"
   description = "Allow incoming HTTP connections & SSH access"
 
   ingress {
@@ -54,21 +54,21 @@ resource "aws_security_group" "sg-web" {
 # Define the security group for the private subnet
 resource "aws_security_group" "sg-db" {
   vpc_id = "${aws_vpc.main.id}"
-  name = "sg_test_wb"
-  description = "Allow traffic from public subnet"
+  name = "sg_test_db"
+  description = "Allows incoming database connections"
 
   ingress { # SQL Server access from web servers
     from_port = 1433
     to_port = 1433
     protocol = "tcp"
-    cidr_blocks = ["${aws_security_group.sg-web.id}"]
+    security_groups = ["${aws_security_group.sg-web.id}"]
   }
 
   ingress { # MySQL access from the web servers
-  from_port = 3306
-  to_port = 3306
-  protocol = "tcp"
-  security_groups = ["${aws_security_group.sg-web.id}"]
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    security_groups = ["${aws_security_group.sg-web.id}"]
   }
 
   egress {

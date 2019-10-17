@@ -29,7 +29,7 @@ variable "AMIS-db" {
   type = "map"
   default = { 
     us-east-1 = "ami-04065317647cd68fc" # SQL server 2012
-    us-east-1 = "ami-0dbbd6f952e12feba" # SQL server 2019
+#    us-east-1 = "ami-0dbbd6f952e12feba" # SQL server 2019
   }
 }
 variable "INSTANCE_USERNAME" {
