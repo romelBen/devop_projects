@@ -1,3 +1,4 @@
+/*
 resource "azurerm_virtual_machine" "app_vm" {
   name = "${var.app_name}-vmexample-${count.index + 1}"
   location = "${azurerm_resource_group.resource_group.location}"
@@ -38,3 +39,4 @@ resource "azurerm_virtual_machine" "app_vm" {
       environment = "Test"
   }
 }
+*/
