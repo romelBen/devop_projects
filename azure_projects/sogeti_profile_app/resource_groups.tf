@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "resource_group" {
+resource "azurerm_resource_group" "main" {
   name = "Sogeti-Profile-App"
   location = "eastus"
 

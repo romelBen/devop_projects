@@ -13,3 +13,12 @@ variable azure_client_secret {
 variable azure_tenant_id {
     type = "string"
 }
+
+variable "prefix" {
+    description = "The previx used for all resources is an example"
+}
+
+variable "location" {
+  description = "The Azure location is where all resources are created"
+}
+
