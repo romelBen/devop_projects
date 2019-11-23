@@ -7,5 +7,8 @@ Terraform projects include...
 -(Azure) Simple Web Architecture
 -(AWS) S3 creation
 
+CloudFormation projects include...
+-(AWS) EC2 instances combined with Auto Scaling and a Load Balancer (currently working on)
+
 Soon to come:
 --Containerization with AWS & more in-depth with Kubernetes
