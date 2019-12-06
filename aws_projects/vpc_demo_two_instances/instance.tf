@@ -6,7 +6,6 @@ resource "aws_instance" "webserver" {
   associate_public_ip_address = true
   source_dest_check = false
   key_name = "${var.AWS_KEY_NAME}"
-  user_data = "${file("install.sh")}"
 
   tags = {
     Name = "webserver"
