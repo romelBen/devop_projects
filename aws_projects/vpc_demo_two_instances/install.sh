@@ -1,4 +1,3 @@
-# Installs SSM agent on Web instance
 #!/bin/sh
 
 # Update and install python and ansible into ec2 instance with nginx

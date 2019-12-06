@@ -26,12 +26,14 @@ tags = {
 
 # Assign public subnet to public route table 
 resource "aws_route_table_association" "web-public-association" {
-  subnet_id = "${aws_subnet.public_subnet.id}"
+  count = "${length(var.public_subnet_cidr)}"
+  subnet_id = "${element(aws_subnet.public_subnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.public_subnet.id}"
 }
 
 # Assign private subnet to private route table
 resource "aws_route_table_association" "db-private-association" {
-  subnet_id = "${aws_subnet.private_subnet.id}"
+  count = "${length(var.private_subnet_cidr)}"
+  subnet_id = "${element(aws_subnet.private_subnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.private_subnet.id}"
 }

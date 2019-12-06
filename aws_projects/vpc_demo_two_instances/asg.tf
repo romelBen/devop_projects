@@ -13,11 +13,11 @@ resource "aws_launch_configuration" "launch-setup" {
 # Create an Auto Scaling Group
 resource "aws_autoscaling_group" "asg-demo" {
   launch_configuration = "${aws_launch_configuration.launch-setup.id}"
-  vpc_zone_identifier = "${aws_subnet.main-public-1.*.id}"
+  vpc_zone_identifier = "${aws_subnet.public_subnet.*.id}"
   min_size = 1
   max_size = 3
   desired_capacity = 3
-  load_balancers = ["${aws_elb.elb-demo.name}"]
+  load_balancers = ["${aws_elb.elb-terraform.id}"]
   health_check_type = "ELB"
   tag {
       key = "Name"
