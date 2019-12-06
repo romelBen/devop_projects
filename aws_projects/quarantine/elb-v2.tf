@@ -1,8 +1,8 @@
 resource "aws_elb" "elb-terraform" {
   name               = "terraform-elb"
-  subnets            = aws_subnet.public_subnet.*.id
-  security_groups    = [aws_security_group.sg-web.id]
-  availability_zones = var.azs
+  subnets = "${aws_subnet.public_subnet.*.id}"
+  security_groups = ["${aws_security_group.sg-web.id}"]
+  availability_zones = "${var.azs}"
 
   health_check {
     healthy_threshold   = 2
@@ -19,7 +19,7 @@ resource "aws_elb" "elb-terraform" {
     instance_protocol = "http"
   }
 
-  instances                   = aws_instance.webserver.*.id
+  instances = "${aws_instance.webserver.*.id}"
   cross_zone_load_balancing   = true
   idle_timeout                = 100
   connection_draining         = true
@@ -31,6 +31,6 @@ resource "aws_elb" "elb-terraform" {
 }
 
 output "elb-dns-name" {
-  value = aws_elb.elb-terraform.dns_name
+  value = "${aws_elb.elb-terraform.dns_name}"
 }
 

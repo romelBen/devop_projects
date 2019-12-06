@@ -1,6 +1,6 @@
 # Define security group for public subnet
 resource "aws_security_group" "sg-web" {
-  vpc_id      = aws_vpc.main.id
+  vpc_id = "${aws_vpc.main.id}"
   name        = "sg_test_web"
   description = "Allow incoming HTTP connections & SSH access"
 
@@ -37,7 +37,7 @@ resource "aws_security_group" "sg-web" {
 
     to_port     = 1433
     protocol    = "tcp"
-    cidr_blocks = var.private_subnet_cidr
+    cidr_blocks = ["${var.private_subnet_cidr}"]
   }
 
   egress {
@@ -45,7 +45,7 @@ resource "aws_security_group" "sg-web" {
 
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = var.private_subnet_cidr
+    cidr_blocks = ["${var.private_subnet_cidr}"]
   }
 
   egress {
@@ -69,7 +69,7 @@ resource "aws_security_group" "sg-web" {
 
 # Define the security group for the private subnet
 resource "aws_security_group" "sg-db" {
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = "${aws_vpc.main.id}"
   name        = "sg_test_db"
   description = "Allows incoming database connections"
 
@@ -78,7 +78,7 @@ resource "aws_security_group" "sg-db" {
 
     to_port         = 1433
     protocol        = "tcp"
-    security_groups = [aws_security_group.sg-web.id]
+    security_groups = ["${aws_security_group.sg-web.id}"]
   }
 
   ingress {
@@ -86,7 +86,7 @@ resource "aws_security_group" "sg-db" {
 
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = [aws_security_group.sg-web.id]
+    security_groups = ["${aws_security_group.sg-web.id}"]
   }
 
   egress {
