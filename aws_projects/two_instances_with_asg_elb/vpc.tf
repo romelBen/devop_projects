@@ -40,8 +40,9 @@ resource "aws_subnet" "public_subnet" {
   vpc_id = "${aws_vpc.main.id}"
   cidr_block = "${element(var.public_subnet_cidr, count.index)}"
   availability_zone = "${element(var.azs, count.index)}"
+  map_public_ip_on_launch = true
   tags = {
-      Name = "Web Public Subnet-${count.index+1}"
+      Name = "Webserver Subnet-${count.index+1}"
   }
 }
 
@@ -51,7 +52,8 @@ resource "aws_subnet" "private_subnet" {
   vpc_id = "${aws_vpc.main.id}"
   cidr_block = "${element(var.private_subnet_cidr, count.index)}"
   availability_zone = "${element(var.azs, count.index)}"
+  map_public_ip_on_launch = true
   tags = {
-      Name = "Web Public Subnet-${count.index+1}"
+      Name = "Database Subnet-${count.index+1}"
   }
 }

@@ -10,10 +10,11 @@
 #ansible-galaxy install nginxinc.nginx
 
 # This is to install Nginx without Ansible
-amazon-linux-extras install -y nginx1.17.6
+#amazon-linux-extras install -y nginx1.17.6
 
 # This is to install Apache and create a file for testing
-#yum install -y httpd
-#service start httpd
-#chkconfig httpd on
-#echo "<html><h1>Hello from Romel!</h1></html>" > /var/www/html/index.html
+sudo yum update
+sudo yum install -y httpd
+sudo chkconfig httpd on
+sudo service httpd start
+echo "<h1>Hello this is Romel</h1>" | sudo tee /var/www/html/index.html
