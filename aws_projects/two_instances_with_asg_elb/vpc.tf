@@ -10,21 +10,20 @@ resource "aws_vpc" "main" {
 }
 
 # NAT Gateway
-/*
 resource "aws_eip" "nat_gw_eip" {
   vpc = true
   depends_on = ["aws_internet_gateway.igw"]
 }
 
 resource "aws_nat_gateway" "nat-gw" {
+  count = 1
   allocation_id = "${aws_eip.nat_gw_eip.id}"
-  subnet_id = "${aws_subnet.public_subnet.id}"
+  subnet_id = "${element(aws_subnet.public_subnet.*.id, count.index)}"
 
   tags = {
     Name = "NAT Gateway"
   }
 }
-*/
 
 # Internet GW
 resource "aws_internet_gateway" "igw" {

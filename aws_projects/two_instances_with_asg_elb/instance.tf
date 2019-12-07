@@ -1,5 +1,6 @@
 resource "aws_instance" "webserver" {
-  count = "${length(var.public_subnet_cidr)}"
+  #count = "${length(var.public_subnet_cidr)}"
+  count = 1
   ami = "${lookup(var.AMIS-web, var.AWS_REGION)}"
   instance_type = "t2.micro"
   subnet_id = "${element(aws_subnet.public_subnet.*.id, count.index)}"
@@ -14,7 +15,8 @@ resource "aws_instance" "webserver" {
 }
 
 resource "aws_instance" "db" {
-  count = "${length(var.private_subnet_cidr)}"
+  #count = "${length(var.private_subnet_cidr)}"
+  count = 1
   ami = "${lookup(var.AMIS-db, var.AWS_REGION)}"
   instance_type = "t2.micro"
   key_name = "${var.AWS_KEY_NAME}"

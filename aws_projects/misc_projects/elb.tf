@@ -1,6 +1,6 @@
 resource "aws_elb" "elb-terraform" {
   name = "terraform-elb"
-  subnets = "${aws_subnet.public_subnet.*.id}"
+  subnets = ["${aws_subnet.public_subnet.id}"]
   security_groups = ["${aws_security_group.sg-web.id}"]
   availability_zones = "${var.azs}"
   
@@ -18,13 +18,13 @@ resource "aws_elb" "elb-terraform" {
       instance_port = "8080"
       instance_protocol = "http"
   }
-
-  instances = "${aws_instance.webserver.*.id}"
+/*
+  instances = "${aws_instance.webserver.id}"
   cross_zone_load_balancing = true
   idle_timeout = 100
   connection_draining = true
   connection_draining_timeout = 300
-
+*/
   tags = {
     Name = "Terraform-ELB"
   }

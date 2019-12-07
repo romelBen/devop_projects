@@ -1,4 +1,5 @@
 resource "aws_launch_configuration" "launch-setup" {
+    name = "terraform-asg"
     image_id = "${lookup(var.AMIS-web, var.AWS_REGION)}"
     instance_type = "t2.micro"
     security_groups = ["${aws_security_group.sg-web.id}"]
@@ -12,6 +13,7 @@ resource "aws_launch_configuration" "launch-setup" {
 
 # Create an Auto Scaling Group
 resource "aws_autoscaling_group" "asg-demo" {
+  name = "ASG-terraform"
   launch_configuration = "${aws_launch_configuration.launch-setup.id}"
   min_size = 1
   max_size = 3

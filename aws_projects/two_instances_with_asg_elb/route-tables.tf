@@ -10,7 +10,6 @@ resource "aws_route_table" "public_subnet" {
       Name = "Public Subnet RT"
   }
 }
-
 /*
 resource "aws_route_table" "private_subnet" {
   vpc_id = "${aws_vpc.main.id}"
