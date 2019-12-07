@@ -2,7 +2,7 @@ resource "aws_elb" "elb-terraform" {
   name               = "terraform-elb"
   subnets = "${aws_subnet.public_subnet.*.id}"
   security_groups = ["${aws_security_group.sg-web.id}"]
-  availability_zones = "${var.azs}"
+  availability_zones = ["us-east-1a, us-east-1b, us-east-1c"]
 
   health_check {
     healthy_threshold   = 2

@@ -28,7 +28,7 @@ resource "aws_route_table" "private_subnet" {
 resource "aws_route_table_association" "web-public-association" {
   #count = "${length(var.public_subnet_cidr)}"
   #subnet_id = "${element(aws_subnet.public_subnet.*.id, count.index)}"
-  subnet_id      = "${aws_route_table.private_subnet.id}"
+  subnet_id      = "${aws_subnet.public_subnet.id}"
   route_table_id = "${aws_route_table.public_subnet.id}"
 }
 
@@ -36,7 +36,7 @@ resource "aws_route_table_association" "web-public-association" {
 resource "aws_route_table_association" "db-private-association" {
   #count = "${length(var.private_subnet_cidr)}"
   #subnet_id = "${element(aws_subnet.private_subnet.*.id, count.index)}"
-  subnet_id      = "${aws_route_table.private_subnet.id}"
-  route_table_id = "${aws_route_table.public_subnet.id}"
+  subnet_id      = "${aws_subnet.private_subnet.id}"
+  route_table_id = "${aws_route_table.private_subnet.id}"
 }
 
