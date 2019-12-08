@@ -17,6 +17,7 @@
 }
 */
 
+/*
 resource "aws_instance" "db" {
   #count = "${length(var.private_subnet_cidr)}"
   ami = "${lookup(var.AMIS-db, var.AWS_REGION)}"
@@ -31,4 +32,4 @@ resource "aws_instance" "db" {
     Name = "database"
   }
 }
-
+*/
