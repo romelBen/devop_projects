@@ -3,7 +3,9 @@ the different archiectures I have built.
 
 Terraform projects include...
 -(AWS) EKS sample architecture (needs to be worked on)
--(AWS) VPC architecture with a web server and database server (what can be done is either going Serverless with replacing DB instance with Aurora MySQL or DynamoDB)
+-(AWS) VPC architecture with a web server and database server with an ASG. I am able to create
+ 6 subnets but having issues with the NAT Gateway choosing the subnet. (Will look into replacing
+ the database with RDS or DynamoDB.)
 -(Azure) Simple Web Architecture
 -(AWS) S3 creation
 
