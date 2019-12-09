@@ -33,22 +33,6 @@ resource "aws_security_group" "sg-web" {
   }
 
   egress {
-    from_port = 1433 # SQL Server access to db server
-
-    to_port     = 1433
-    protocol    = "tcp"
-    cidr_blocks = ["${var.private_subnet_cidr}"]
-  }
-
-  egress {
-    from_port = 3306 # MySQL access to db server
-
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["${var.private_subnet_cidr}"]
-  }
-
-  egress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -61,7 +45,21 @@ resource "aws_security_group" "sg-web" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  egress {
+    from_port = 1433 # SQL Server access to db server
 
+    to_port     = 1433
+    protocol    = "tcp"
+    cidr_blocks = ["${var.private_subnet_cidr}"]
+  }
+
+  egress {
+    from_port = 3306 # MySQL access to db server
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["${var.private_subnet_cidr}"]
+  }
+  
   tags = {
     Name = "Web Server SG"
   }
