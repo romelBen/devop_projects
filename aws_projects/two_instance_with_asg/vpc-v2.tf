@@ -55,7 +55,6 @@ resource "aws_subnet" "private_subnet" {
   cidr_block = "${var.private_subnet_cidr}"
   availability_zone = "${var.azs}"
   #availability_zone = "${element(var.azs, count.index)}"
-  #availability_zone       = "${var.azs}"
   tags = {
     #Name = "Database Subnet-${count.index + 1}"
     Name = "Database Subnet"
