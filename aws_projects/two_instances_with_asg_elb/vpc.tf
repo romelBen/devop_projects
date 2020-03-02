@@ -9,22 +9,6 @@ resource "aws_vpc" "main" {
     }
 }
 
-# NAT Gateway
-resource "aws_eip" "nat_gw_eip" {
-  vpc = true
-  depends_on = ["aws_internet_gateway.igw"]
-}
-
-resource "aws_nat_gateway" "nat-gw" {
-  count = 1
-  allocation_id = "${aws_eip.nat_gw_eip.id}"
-  subnet_id = "${element(aws_subnet.public_subnet.*.id, count.index)}"
-
-  tags = {
-    Name = "NAT Gateway"
-  }
-}
-
 # Internet GW
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.main.id}"
@@ -45,6 +29,23 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
+/*
+# NAT Gateway
+resource "aws_eip" "nat_gw_eip" {
+  vpc = true
+  depends_on = ["aws_internet_gateway.igw"]
+}
+
+resource "aws_nat_gateway" "nat-gw" {
+  count = 1
+  allocation_id = "${aws_eip.nat_gw_eip.id}"
+  subnet_id = "${element(aws_subnet.public_subnet.*.id, count.index)}"
+
+  tags = {
+    Name = "NAT Gateway"
+  }
+}
+
 # Private Subnets
 resource "aws_subnet" "private_subnet" {
   count = "${length(var.private_subnet_cidr)}"
@@ -56,3 +57,4 @@ resource "aws_subnet" "private_subnet" {
       Name = "Database Subnet-${count.index+1}"
   }
 }
+*/
