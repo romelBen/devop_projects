@@ -1,0 +1,248 @@
+---
+
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Create a VPC architecture
+
+Parameters:
+  # Ownership
+  Owner:
+    Type: String
+    Default: FirstName LastName
+  Project:
+    Type: String
+    Default: MySQL RDS Creation
+  DeleteAfter:
+    Type: String
+    Default: 00/00/201x
+
+  # Subnets
+  VPCSubnetCidrBlock:
+    Description: 10.0.0.0/16 = 10.0.0.0 - 10.0.255.255
+    Type: String
+    Default: 10.0.0.0/16
+    MinLength: '10'
+    MaxLength: '18'
+    AllowedPattern: '(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})'
+  AvailabilityZone1:
+    Type: String
+    Default: a
+    AllowedValues:
+    - a
+    - b
+    - c
+    - d
+    - e
+    - f
+  AvailabilityZone2:
+    Type: String
+    Default: b
+    AllowedValues:
+    - a
+    - b
+    - c
+    - d
+    - e
+    - f
+  AvailabilityZone3:
+    Type: String
+    Default: c
+    AllowedValues:
+    - a
+    - b
+    - c
+    - d
+    - e
+    - f
+  # Public Cidr Blocks 1-3
+  PublicSubnetCidrBlock1:
+    Type: String
+    Default: 10.0.1.0/24
+    MinLength: '10'
+    MaxLength: '18'
+    AllowedPattern: '(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})'
+  PublicSubnetCidrBlock2:
+    Type: String
+    Default: 10.0.2.0/24
+    MinLength: '10'
+    MaxLength: '18'
+    AllowedPattern: '(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})'
+  PublicSubnetCidrBlock3:
+    Type: String
+    Default: 10.0.3.0/24
+    MinLength: '10'
+    MaxLength: '18'
+    AllowedPattern: '(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})'
+  # Private Cidr Blcoks 1-3
+  PrivateSubnetCidrBlock1:
+    Type: String
+    Default: 10.0.4.0/24
+    MinLength: '10'
+    MaxLength: '18'
+    AllowedPattern: '(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})'
+  PrivateSubnetCidrBlock2:
+    Type: String
+    Default: 10.0.5.0/24
+    MinLength: '10'
+    MaxLength: '18'
+    AllowedPattern: '(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})'
+  PrivateSubnetCidrBlock3:
+    Type: String
+    Default: 10.0.6.0/24
+    MinLength: '10'
+    MaxLength: '18'
+    AllowedPattern: '(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})'
+
+  # Remote Access Network
+  RemoteCidrForSecurityGroup:
+    Description: CIDR Block for SG to grant access to Instances (i.e. 192.168.100.0/24)
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 192.168.100.0/24
+    AllowedPattern: '(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})'
+    ConstraintDescription: must be a valid CIDR range of the form x.x.x.x/x
+
+Metadata:
+  TemplateAuthor: 'Romel I. Benavides'
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+    -
+      Label:
+        default: Ownership
+      Parameters:
+        - Owner
+        - Project
+        - DeleteAfter
+
+    -
+      Label:
+        default: Remote Access
+      Parameters:
+        - RemoteCidrForSecurityGroup
+
+    -
+      Label:
+        default: Subnets
+      Parameters:
+        - VPCSubnetCidrBlock
+        - PublicSubnetCidrBlock1
+        - PublicSubnetCidrBlock2
+        - PublicSubnetCidrBlock3
+        - PrivateSubnetCidrBlock1
+        - PrivateSubnetCidrBlock2
+        - PrivateSubnetCidrBlock3
+        - AvailabilityZone1
+        - AvailabilityZone2
+        - AvailabilityZone3
+
+    ParameterLabels:
+      Owner:
+        default: Team or Individual Owner
+      DeleteAfter:
+        default: Delete After Date
+      RemoteCidrForSecurityGroup:
+        default: Network CIDR for SG
+      VPCSubnetCidrBlock:
+        default: VPC Subnet
+      PublicSubnetCidrBlock1:
+        default: Public Subnet 1
+      PublicSubnetCidrBlock2:
+        default: Public Subnet 2
+      PublicSubnetCidrBlock3:
+        default: Public Subnet 3
+      PrivateSubnetCidrBlock1:
+        default: Private Subnet 1
+      PrivateSubnetCidrBlock2:
+        default: Private Subnet 2
+      PrivateSubnetCidrBlock3:
+        default: Private Subnet 3
+      AvailabilityZone1:
+        default: Availability Zone 1
+      AvailabilityZone2:
+        default: Availability Zone 2
+      AvailabilityZone3:
+        default: Availability Zone 3
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCSubnetCidrBlock
+      EnableDnsSupport: true
+      EnbleDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value: !Ref 'AWS::StackName'
+      - Key: Owner
+        Value: !Ref Owner
+      - Key: Project
+        Value: !Ref Project
+      - Key: DeleteAfter
+        Value: !Ref DeleteAfter
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    DependsOn: VPC
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Join [ '', [ !Ref 'AWS::Region', !Ref AvailabilityZone1 ] ]
+      CidrBlock: !Ref PublicSubnetCidrBlock1
+      Tags:
+      - Key: Name
+        Value: !Join [ '', [ !Ref 'AWS::StackName', '-public-az1' ] ]
+      - Key: Owner
+        Value: !Ref Owner
+      - Key: Project
+        Value: !Ref Project
+      - Key: DeleteAfter
+        Value: !Ref DeleteAfter
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    DependsOn: VPC
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Join [ '', [ !Ref 'AWS::Region', !Ref AvailabilityZone2 ] ]
+      CidrBlock: !Ref PublicSubnetCidrBlock2
+      Tags:
+      - Key: Name
+        Value: !Join [ '', [ !Ref 'AWS::StackName', '-public-az2' ] ]
+      - Key: Owner
+        Value: !Ref Owner
+      - Key: Project
+        Value: !Ref Project
+      - Key: DeleteAfter
+        Value: !Ref DeleteAfter
+
+  PublicSubnet3:
+    Type: AWS::EC2::Subnet
+    DependsOn: VPC
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Join [ '', [ !Ref 'AWS::Region', !Ref AvailabilityZone3 ] ]
+      CidrBlock: !Ref PublicSubnetCidrBlock3
+      Tags:
+      - Key: Name
+        Value: !Join [ '', [ !Ref 'AWS::StackName', '-public-az3' ] ]
+      - Key: Owner
+        Value: !Ref Owner
+      - Key: Project
+        Value: !Ref Project
+      - Key: DeleteAfter
+        Value: !Ref DeleteAfter
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: !Ref 'AWS::StackName'
+      - Key: Owner
+        Value: !Ref Owner
+      - Key: Project
+        Value: !Ref Project
+      - Key: DeleteAfter
+        Value: !Ref DeleteAfter
+
+  GatewayToInternet:
