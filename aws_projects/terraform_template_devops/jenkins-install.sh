@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 sudo yum -y update
 
 # Installation of Java JDK 8
