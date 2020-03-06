@@ -29,7 +29,7 @@ variable "azs" {
 variable "AMIS-jenkins" {
   type = "map"
   default = {
-    us-east-1 = "ami-0c322300a1dd5dc79" # AMI of RedHat Linux
+    us-east-1 = "ami-0a887e401f7654935" # AWS Linux 2 AMI
   }
 }
 
