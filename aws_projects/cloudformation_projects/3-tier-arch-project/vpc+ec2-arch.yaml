@@ -455,24 +455,20 @@ Outputs:
      Name: !Sub ${AWS::StackName}-PublicSubnetB
  PublicSubnetC:
    Description: Third Public Subnet
-   Condition: BuildPublicC
    Value: !Ref PublicSubnetC
    Export:
      Name: !Sub ${AWS::StackName}-PublicSubnetC
  PrivateSubnetA:
-   Condition: BuildPrivateSubnets
    Description: First Private Subnet
    Value: !Ref PrivateSubnetA
    Export:
      Name: !Sub ${AWS::StackName}-PrivateSubnetA
  PrivateSubnetB:
-   Condition: BuildPrivateB
    Description: Second Private Subnet
    Value: !Ref PrivateSubnetB
    Export:
      Name: !Sub ${AWS::StackName}-PrivateSubnetB
  PrivateSubnetC:
-   Condition: BuildPrivateC
    Description: Third Private Subnet
    Value: !Ref PrivateSubnetC
    Export:
