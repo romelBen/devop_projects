@@ -22,14 +22,10 @@ variable "public_subnet_cidr" {
   default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 }
 
-variable "azs" {
-  default = "us-east-1a"
-}
-
 variable "SQL-AMI" {
   type = "map"
   default = {
-    us-east-1 = "ami-06465b8853bf890cd" # Microsoft Windows Server 2012
+    us-east-1 = "ami-00cb4c0d60b9476f4" # Microsoft Windows Server 2019
   }
 }
 
