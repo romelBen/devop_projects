@@ -11,7 +11,7 @@
 
 ## CloudFormation projects include...
 - (AWS) Created a VPC architecture housing an EC2 instance
-- (AWS) EC2 instances combined with Auto Scaling and a Load Balancer (needs to be worked on)
+- (AWS) Created a VPC architecture with a EC2 instance (private instance), Load Balancer, and a Bastion Host (public instance).
 
 ## Soon to come:
 - (AWS) EKS sample architecture (needs to be worked on)
