@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-# This CloudFormation template deploys a basic VPC Network
+# This CloudFormation template deploys a basic VPC Network & EC2 instance
 
 ################ Parameters Section ##############################
 Parameters:
