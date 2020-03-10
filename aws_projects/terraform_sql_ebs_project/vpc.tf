@@ -1,3 +1,4 @@
+# Looks through all zones in an AZ
 data "aws_availability_zones" "available" {}
 
 # Internet VPC
