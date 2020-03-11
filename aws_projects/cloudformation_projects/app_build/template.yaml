@@ -101,7 +101,7 @@ Resources:
       Tags:
         - Key: Name
           Value: Main CIDR block
-  # Public subnets (2)
+  # Public subnet (1)
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
@@ -111,6 +111,7 @@ Resources:
       Tags:
         - Key: Name 
           Value: PublicSubnet-1
+  # Public subnet (2)
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -120,7 +121,7 @@ Resources:
       Tags:
         - Key: Name 
           Value: PublicSubnet-2
-  # Private Subnets (2)
+  # Private Subnets (1)
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
@@ -130,6 +131,7 @@ Resources:
       Tags:
         - Key: Name 
           Value: PrivateSubnet-1
+  # Private Subnet (2)
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
