@@ -8,9 +8,13 @@
 - (AWS) S3 creation
 - (Azure) Simple Web Architecture
 
-#### Important file to include AND remove from PUBLIC (use .gitignore)
-- terraform.tfvars (This file will include your CONFIDENTIAL information. DO NOT allow this file to be put 
-for the public because they will have programmatic access in your account which spells BAD.)
+#### Parameter file
+#### This file will determine the region, vpc_cidr, public_subnet(s), private_subnet(s), and AMIs. (Remember, AMIs are different for every region.)
+- var.tf
+
+#### Important file to include in your project BUT must be removed for PUBLIC USE (use .gitignore)
+##### This file will include your CONFIDENTIAL information. DO NOT allow this file to be put for the public because they will have programmatic access in your account which spells BAD.
+- terraform.tfvars 
 ```
 AWS_ACCESS_KEY = "access key here"
 AWS_SECRET_KEY = "secret key here"
