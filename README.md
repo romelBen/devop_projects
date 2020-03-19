@@ -23,7 +23,7 @@ AWS_KEY_PATH = "key path here" <here is an example: ~/.ssh/KeyTest.pem>
 
 ## CloudFormation projects include...
 - (AWS) Created a VPC architecture housing an EC2 instance
-- (AWS) Created a VPC architecture with a EC2 instance (private instance), Load Balancer, and a Bastion Host (public instance).
+- (AWS) Created a VPC architecture with a EC2 instance (private instance), Load Balancer, and a Auto Scaling Group (for the Bastion Host when needed).
 
 #### Note
 All my projects use YAML since JSON has given me many difficulties when it comes to error or format.
