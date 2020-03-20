@@ -29,36 +29,3 @@ resource "aws_autoscaling_group" "jenkins-asg" {
     propagate_at_launch = true
   }
 }
-
-/*
-############# Another Instance #################
-# Create Launch Configuration
-resource "aws_launch_configuration" "jenkins-launch-setup" {
-  name = "Jenkins Launch Config"
-  image_id = "${lookup(var.AMIS-db, var.AWS_REGION)}"
-  instance_type   = "t2.micro"
-  security_groups = ["${aws_security_group.sg-db.id}"]
-  key_name        = "${var.AWS_KEY_NAME}"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-# Create an Auto Scaling Group
-resource "aws_autoscaling_group" "jenkins-asg" {
-  name = "Jenkins Launch Setup"
-  launch_configuration = "${aws_launch_configuration.jenkins-launch-setup.id}"
-  min_size             = 1
-  max_size             = 3
-  desired_capacity     = 1
-  health_check_type    = "ELB"
-  #load_balancers       = "$[aws_elb.elb-terraform.id]"
-  vpc_zone_identifier  = "${aws_subnet.private_subnet.*.id}"
-  tag {
-    key                 = "Name"
-    value               = "jenkins-terraform"
-    propagate_at_launch = true
-  }
-}
-*/

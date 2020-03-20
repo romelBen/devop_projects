@@ -15,7 +15,7 @@ resource "aws_launch_configuration" "sqlserver-launch-setup" {
   }
 
   ebs_block_device {
-    device_name = "/dev/xvdb, /dev/xvdc, /dev/xvdd, /dev/xvde"
+    device_name = "/dev/xvdb, /dev/xvdc, /dev/xvdd, /dev/xvde" # needs to be reworked
     volume_size = "150"
     volume_type = "gp2"
     delete_on_termination = "true" # FOR TESTING PURPOSES ONLY
