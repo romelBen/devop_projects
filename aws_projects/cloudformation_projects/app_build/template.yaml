@@ -96,12 +96,12 @@ Parameters:
       db.m2.2xlarge, db.m2.4xlarge, db.cr1.8xlarge, db.t2.micro, db.t2.small, db.t2.medium,
       db.t2.large ]
     ConstraintDescription: Must select a valid database instance type
-  EC2SecurityGroup:
-    Description: The EC2 security group that contains instances that need access to the database
-    Default: default
-    Type: String
-    AllowedPattern: '[a-zA-Z0-9\-]+'
-    ConstraintDescription: Must be a valid security group name
+#  EC2SecurityGroup:
+#    Description: The EC2 security group that contains instances that need access to the database
+#    Default: default
+#    Type: String
+#    AllowedPattern: '[a-zA-Z0-9\-]+'
+#    ConstraintDescription: Must be a valid security group name
   MultiAZ:
     Description: Multi-AZ master database
     Type: String
@@ -433,7 +433,7 @@ Resources:
       - IpProtocol: tcp
         FromPort: '3306'
         ToPort: '3306'
-        SourceSecurityGroupName: !Ref EC2SecurityGroup
+        SourceSecurityGroupName: !Ref EC2SG
   # DB Master 
   MasterDB:
     Type: AWS::RDS::DBInstance
