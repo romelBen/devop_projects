@@ -28,11 +28,12 @@ AWS_KEY_PATH = "key path here" <here is an example: ~/.ssh/KeyTest.pem>
 #### Note
 All my projects use YAML since JSON has given me many difficulties when it comes to error or format.
 
-## Scripting projects include...
+## Scripting projects
 - (Python) Email notification
 - (Python) Information collector
 - (Python) System monitor
-- (Python) Display kernal and dispace info
+- (Python) Display kernal and diskspace info
 
-## Soon to come:
+## Currently working on:
 - (AWS) EKS sample architecture (needs to be worked on)
+- (AWS) Ansible architecture (needs to be worked on)
