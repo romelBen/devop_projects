@@ -15,7 +15,7 @@
     }],
     "provisioner": [{
         "type": "shell",
-        "scripts": ["scripts/isntall_software.sh" ],
+        "scripts": ["build-ami.sh" ],
         "execute_command": "{{ .Vars }} sudo -E sh '{{ .Path }}'",
         "pause_before": "10s"
     }]
