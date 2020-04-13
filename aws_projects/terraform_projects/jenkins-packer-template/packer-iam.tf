@@ -15,7 +15,6 @@ resource "aws_iam_role" "jenkins-role" {
   ]
 }
 EOF
-
 }
 
 resource "aws_iam_instance_profile" "jenkins-role" {
