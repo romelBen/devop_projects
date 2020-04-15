@@ -10,7 +10,7 @@ resource "aws_route_table" "public_subnet" {
       Name = "Public Subnet RT"
   }
 }
-/*
+
 resource "aws_route_table" "private_subnet" {
   vpc_id = "${aws_vpc.main.id}"
 
@@ -23,7 +23,7 @@ tags = {
   Name = "Private Subnet RT"
 }
 }
-*/
+
 
 # Assign public subnet to public route table 
 resource "aws_route_table_association" "web-public-association" {
@@ -32,11 +32,10 @@ resource "aws_route_table_association" "web-public-association" {
   route_table_id = "${aws_route_table.public_subnet.id}"
 }
 
-/*
+
 # Assign private subnet to private route table
 resource "aws_route_table_association" "db-private-association" {
   count = "${length(var.private_subnet_cidr)}"
   subnet_id = "${element(aws_subnet.private_subnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.private_subnet.id}"
 }
-*/

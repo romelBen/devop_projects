@@ -1,7 +1,7 @@
 # Define security group for public subnet
 resource "aws_security_group" "sg-web" {
   vpc_id = "${aws_vpc.main.id}"
-  name = "sg_test_web"
+  name = "Security Group Web"
   description = "Allow incoming HTTP connections & SSH access"
 
   ingress {
@@ -69,7 +69,7 @@ resource "aws_security_group" "sg-web" {
 # Define the security group for the private subnet
 resource "aws_security_group" "sg-db" {
   vpc_id = "${aws_vpc.main.id}"
-  name = "sg_test_db"
+  name = "Security Group DB"
   description = "Allows incoming database connections"
 
   ingress { # SQL Server access from web servers
