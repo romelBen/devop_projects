@@ -37,14 +37,14 @@ resource "aws_security_group" "sg-web" {
     from_port = 1433
     to_port = 1433
     protocol = "tcp"
-    cidr_blocks = "${var.private_subnet_cidr}"
+    cidr_blocks = "${var.database_subnet_cidr}"
   }
 
   egress { # MySQL access to db server
     from_port = 3306
     to_port = 3306
     protocol = "tcp"
-    cidr_blocks = "${var.private_subnet_cidr}"
+    cidr_blocks = "${var.database_subnet_cidr}"
   }
 
   egress {
@@ -102,5 +102,25 @@ resource "aws_security_group" "sg-db" {
 
   tags = {
     Name = "Database SG"
+  }
+}
+
+resource "aws_security_group" "sg-elb" {
+  vpc_id = "${aws_vpc.main.id}"
+  name = "Security Group ELB"
+  description = "Allows connections over the web for the ELB"
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
