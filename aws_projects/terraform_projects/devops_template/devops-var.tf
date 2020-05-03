@@ -28,3 +28,11 @@ variable "AMIS-jenkins" {
     us-east-1 = "ami-0a887e401f7654935" # AWS Linux 2 AMI
   }
 }
+
+variable "AMIS-RHEL8" {
+  type = "map"
+  default = {
+    us-east-1 = "ami-098f16afa9edf40be" # RHEL8
+  }
+}
+

@@ -10,12 +10,6 @@ sudo yum install -y java-1.8.0-openjdk
 echo "Install git"
 sudo yum -y git
 
-# Installation of Docker engine
-echo "Install Docker engine"
-sudo yum update -yum
-sudo yum install docker -yum
-sudo chkconfig docker on
-
 # Insallation of Jenkins
 echo "Install Jenkins"
 wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
@@ -24,6 +18,5 @@ sudo yum install -y jenkins
 sudo usermod -a -G docker jenkins
 sudo chkconfig jenkins on
 
-# Start Docker and Jenkins
-sudo service docker start
+# Start Jenkins
 sudo service jenkins start
