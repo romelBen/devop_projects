@@ -1,6 +1,6 @@
 # Infrastructure Projects (Terraform/CloudFormation)
 
-## Terraform projects (v0.12)
+## Terraform projects (v0.11)
 - (AWS) VPC architecture with a web server and database server with an ASG. I am able to create
  6 subnets but having issues with the NAT Gateway choosing the subnet. (Needs to be worked on)
 - (AWS) Created a VPC architecture with 4 EC2 instances combined with an ASG that has Microsoft SQL Server installed. (Trying to find a way of scripting EBS volumes on all 4 instances if the instance is to fail.) 
@@ -35,5 +35,8 @@ All my projects use YAML since JSON has given me many difficulties when it comes
 - (Python) Display kernal and diskspace info
 
 ## Currently working on:
-- (AWS) EKS sample architecture (needs to be worked on)
-- (AWS) Ansible architecture (needs to be worked on)
+- (AWS) Devops Template (needs to be worked on with incorporating Jenkins, Docker, and Ansible)
+
+
+## Important
+- I need to update from Terraform .11v to .12v so please bare with me on these changes since I would need to make sure the code works.
