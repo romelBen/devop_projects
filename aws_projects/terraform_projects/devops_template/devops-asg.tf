@@ -36,7 +36,7 @@ resource "aws_launch_configuration" "ansible-launch-setup" {
   name = "Ansible Launch Configuration"
   image_id = "${lookup(var.AMIS-RHEL8, var.AWS_REGION)}"
   instance_type   = "t2.micro"
-  security_groups = ["${aws_security_group.sg-jenkins.id}"]
+  security_groups = ["${aws_security_group.sg-ansible.id}"]
   key_name        = "${var.AWS_KEY_NAME}"
   user_data       = "${file("ansible-install.sh")}"
 
@@ -57,9 +57,7 @@ resource "aws_autoscaling_group" "ansible-asg" {
   vpc_zone_identifier  = "${aws_subnet.public_subnet.*.id}"
   tag {
     key                 = "Name"
-    value               = "Jenkins-asg-terraform"
+    value               = "Ansible-asg-terraform"
     propagate_at_launch = true
   }
 }
-
-######### Docker Instance Configuration ##############
