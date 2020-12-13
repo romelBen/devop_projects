@@ -56,9 +56,8 @@
         name: "{{ sys_packages }}"
         state: latest
 
-    ### Setup Docker's GPG apt key, Docker CE, as well as necessary packages to apt
-    ### (i.e.: apt-transport-https, ca-certificates, curl, gnupg-agent,
-    ###  software-properities-common).
+    ### Setup Docker's GPG apt key, Docker CE, Docker Respository, as well as necessary packages to apt
+    ### (i.e. apt-transport-https, ca-certificates, curl, gnupg-agent, software-properities-common).
     - name: Add Docker GPG apt key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
