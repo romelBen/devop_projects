@@ -57,7 +57,7 @@
     # Copy over NTP configurations
     - name: Copy over the NTP configuration
       template:
-        src: /home/romelben/Documents/infrastructure_projects/scripting_projects/ansible-scripts/server-playbook/vars/ntp.conf
+        src: ntp.conf
         dest: /etc/ntp.conf
       notify:
         - restart ntp
