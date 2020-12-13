@@ -20,7 +20,7 @@
         validate: '/usr/sbin/visudo -cf %s'
 
     # User + Key Setup
-    - name: Create a regular user with sudo privilages
+    - name: Create a regular user with sudo privilages to wheel group
       user:
         name: "{{ create_user }}"
         state: present
@@ -28,9 +28,11 @@
         append: true
         create_home: true
         shell: /bin/bash
-    
+
+    # Make sure to create an SSH key on your local computer.
+    # This can be done using this command: ssh-keygen -t rsa -b 4096 -C "email_here@domain.com"
     - name: Set authorized key for remote user
-      authorized_key:
+      ansible.posix.authorized_key:
         user: "{{ create_user }}"
         state: present
         key: "{{ copy_local_key }}"
@@ -51,15 +53,15 @@
       apt:
         name: "{{ sys_packages }}"
         state: latest
-    
+
     # UFW setup
     - name: UFW - Allow SSH connections
       ufw:
-        rule: Allow
+        rule: allow
         name: OpenSSH
 
     - name: UFW - Deny all other incoming traffic by default
       ufw:
         state: enabled
-        policy: Deny
+        policy: deny
         direction: incoming
