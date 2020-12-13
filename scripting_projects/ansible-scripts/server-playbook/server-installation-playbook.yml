@@ -59,9 +59,6 @@
       template:
         src: ntp.conf
         dest: /etc/ntp.conf
-      notify:
-        - restart ntp
-        - force ntp update
       tags: ntp
 
     # Confirm if NTP has began in the system
@@ -71,6 +68,12 @@
         state: started
         enabled: yes
       tags: ntp
+
+    # Restart the NTP service
+    - name: Restart NTP server
+      service:
+        name: ntp
+        state: restarted
 
     # UFW setup
     - name: UFW - Allow SSH connections
