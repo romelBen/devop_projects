@@ -56,6 +56,32 @@
         name: "{{ sys_packages }}"
         state: latest
 
+    ### Setup Docker's GPG apt key, Docker CE, as well as necessary packages to apt
+    ### (i.e.: apt-transport-https, ca-certificates, curl, gnupg-agent,
+    ###  software-properities-common).
+    - name: Add Docker GPG apt key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+          repo: deb https://download.docker.com/linux/ubuntu bionic stable
+          state: present
+
+    - name: Install Docker-CE to targeted system
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+
+    ### IMPORTANT: Make sure to executable has pip3 since Ansible's module of pip
+    ### will jump straight to pip.
+    - name: Install Docker module for Python
+      pip:
+        name: docker
+        executable: pip3
+
     ### Copy, confirm, and setup NTP on distro
     - name: Copy over the NTP configuration
       template:
