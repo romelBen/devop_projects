@@ -5,12 +5,13 @@
     - vars/server-setup.yml
 
   tasks:
+    ### Create wheel group
     - name: Setup 'wheel' group
       group:
         name: wheel
         state: present
 
-    # Sudo group setup
+    ### Setup wheel group to not have passwordless
     - name: Allow 'wheel' group to have passwordless sudo
       lineinfile:
         path: /etc/sudoers
@@ -19,7 +20,7 @@
         line: '%wheel ALL=(ALL) NOPASSWD: ALL'
         validate: '/usr/sbin/visudo -cf %s'
 
-    # User + Key Setup
+    ### Set created user to wheel group with sudo privilages
     - name: Create a regular user with sudo privilages to wheel group
       user:
         name: "{{ create_user }}"
@@ -29,8 +30,9 @@
         create_home: true
         shell: /bin/bash
 
-    # Make sure to create an SSH key on your local computer.
-    # This can be done using this command: ssh-keygen -t rsa -b 4096 -C "email_here@domain.com"
+    #### IMPORTNAT: Make sure to create an SSH key on your local computer.
+    #### This can be done using this command: ssh-keygen -t rsa -b 4096 -C "email_here@domain.com"
+    ### This will setup user, pull local SSH key from local computer, and disable password authentication for root
     - name: Set authorized key for remote user
       ansible.posix.authorized_key:
         user: "{{ create_user }}"
@@ -44,7 +46,7 @@
         regexp: '^#?PermitRootLogin'
         line: 'PermitRootLogin prohibit-password'
 
-    # Install system packages for Debian/Ubuntu distros (since the package manager is using apt)
+    ### Complete setup of packages for Debian/Ubuntu distros
     - name: Update apt packages
       apt:
         update_cache: yes
@@ -54,14 +56,13 @@
         name: "{{ sys_packages }}"
         state: latest
 
-    # Copy over NTP configurations
+    ### Copy, confirm, and setup NTP on distro
     - name: Copy over the NTP configuration
       template:
         src: ntp.conf
         dest: /etc/ntp.conf
       tags: ntp
 
-    # Confirm if NTP has began in the system
     - name: Confirm if NTP has initiated
       service:
         name: ntp
@@ -69,13 +70,12 @@
         enabled: yes
       tags: ntp
 
-    # Restart the NTP service
     - name: Restart NTP server
       service:
         name: ntp
         state: restarted
 
-    # UFW setup
+    ### Firewall setup
     - name: UFW - Allow SSH connections
       ufw:
         rule: allow
