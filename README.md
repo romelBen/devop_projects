@@ -12,7 +12,7 @@
 #### This file will determine the region, vpc_cidr, public_subnet(s), private_subnet(s), and AMIs. (Remember, AMIs are different for every region.)
 - var.tf
 
-#### Important file to include in your project BUT must be removed for PUBLIC USE (use .gitignore)
+#### Important file to include in your project BUT must be removed from PUBLIC USE (use .gitignore)
 ##### This file will include your CONFIDENTIAL information. DO NOT allow this file to be put for the public because they will have programmatic access in your account which spells BAD.
 - terraform.tfvars 
 ```
@@ -25,9 +25,6 @@ AWS_KEY_PATH = "key path here" <here is an example: ~/.ssh/KeyTest.pem>
 - (AWS) Created a VPC architecture housing an EC2 instance
 - (AWS) Created a VPC architecture with a EC2 instance (private instance), Load Balancer, and a Auto Scaling Group (for the Bastion Host when needed).
 
-#### Note
-All my projects use YAML since JSON has given me many difficulties when it comes to error or format.
-
 ## Scripting projects
 - (Python) Email notification
 - (Python) Information collector
@@ -35,8 +32,10 @@ All my projects use YAML since JSON has given me many difficulties when it comes
 - (Python) Display kernal and diskspace info
 
 ## Currently working on:
-- (AWS) Devops Template (needs to be worked on with incorporating Jenkins, Docker, and Ansible)
-
+- Working on Ansible scripts to setup Debian/Ubuntu servers with packages
+- Also, working on an Ansible script that sets up a Raspberry Pi 4 with Grafana + Prometheus + node_exporter 
+(this plugin allows you to pull essential data from Linux servers such as CPU Utilization, Memory Utilization, Swap Usage,
+etc.)
 
 ## Important
 - I need to update from Terraform .11v to .12v so please bare with me on these changes since I would need to make sure the code works.
