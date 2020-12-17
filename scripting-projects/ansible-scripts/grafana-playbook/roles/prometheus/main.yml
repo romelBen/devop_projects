@@ -1,3 +1,13 @@
+### Setup Prometheus by creating a folder in /opt/, extract the files necessary, create the service file,
+### refresh the server, and finally start up Prometheus. To connect to the server, the URL is https://localhost:9090/graph.
+
+### IMPORTANT: For the device running Prometheus, you MUST edit the prometheus.yml to add the sources of the devices running
+### Node Exporter under "static_configs". It should read like so:
+### static_configs:
+### - targets: ['localhost:9090']
+### - targets: ['192.168.10.4:9100']
+### - targets: ['172.255.142.50:9100']
+
 ---
 - name: Download Prometheus
   get_url:
@@ -10,7 +20,7 @@
   file:
     path: /usr/bin/prometheus
     state: directory
-    mode: '0777'
+    mode: '0775'
 
 - name: Extract Prometheus
   become: yes
@@ -30,7 +40,7 @@
   file:
     path: /usr/bin/prometheus/prometheus-2.19.1.linux-armv7/data
     state: directory
-    mode: '0777'
+    mode: '0775'
 
 - name: Edit Prometheus Service File
   become: yes

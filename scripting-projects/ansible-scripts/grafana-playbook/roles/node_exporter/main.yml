@@ -1,7 +1,10 @@
+### Node Exporter will allow OS metrics on multiple hardware to be exposed so you can pull data and visualize in Grafana.
+### Node Exporter will be downloaded to /tmp directory, a folder will be created in /opt, extract then modify the Service File,
+### create a system reload, and finally start up the service. To connect to the server, the URL is https://localhost:9100/.
 ---
 - name: Download Node Exporter
   get_url:
-    url: https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-armv7.tar.g
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-armv7.tar.gz
     dest: /tmp
     checksum: sha256:e7f4427a25f1870103588e4968c7dc8c1426c00a0c029d0183a9a7afdd61357b
 
@@ -10,7 +13,7 @@
   file:
     path: /usr/bin/nodeexporter
     state: directory
-    mode: '0777'
+    mode: '0775'
 
 - name: Extract Node Exporter Service File
   become: yes
@@ -32,7 +35,7 @@
     marker: ""
     block: |
       [Unit]
-      Description=Node Exporter
+      Description=Node_Exporter
       Documentation=https://prometheus.io/
       After=network-online.target
 

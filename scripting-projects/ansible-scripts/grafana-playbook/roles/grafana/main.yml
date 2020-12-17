@@ -1,3 +1,5 @@
+### Grafana will be installed to /tmp directory where 2 plugines will be needed named as adduser and libfontconfig1.
+### From here we install Grafana and enable the servers to start. To connect to the server, the URL is https://localhost:3000/.
 ---
 - name: Download Grafana
   get_url:
