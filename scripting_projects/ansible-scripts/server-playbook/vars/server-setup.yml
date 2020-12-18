@@ -1,5 +1,5 @@
 ---
 create_user: romelben
 copy_local_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
-sys_packages: [ 'curl', 'vim', 'git', 'ufw', 'wget', 'aptitude', 'ca-certificates', 'software-properties-common', 'gnupg-agent',
-                'python3-pip', 'apt-transport-https', 'virtualenv', 'bash', 'nodejs', 'npm', 'ntp', 'ntpdate', 'htop' ]
+sys_packages: [ 'curl', 'vim', 'git', 'ufw', 'wget', 'aptitude', 'ca-certificates', 'software-properties-common', 'gnupg-agent', 'virtualbox',
+                'vagrant', 'ansible', 'python3-pip', 'apt-transport-https', 'virtualenv', 'bash', 'nodejs', 'npm', 'ntp', 'ntpdate', 'htop' ]

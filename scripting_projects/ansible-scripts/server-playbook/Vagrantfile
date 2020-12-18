@@ -1,8 +1,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Ubuntu 18.04 Test
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.define "ubuntu-1804" do |subconfig|
+    subconfig.vm.box = "ubuntu/bionic64"
+  end
+
+#  config.vm.define "ubuntu-2004" do |subconfig|
+#    subconfig.vm.box = "ubuntu/focal64"
+#  end
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "server-installation-playbook.yml"
