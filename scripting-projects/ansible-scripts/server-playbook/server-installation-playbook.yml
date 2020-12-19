@@ -5,7 +5,7 @@
     - vars/server-setup.yml
 
   tasks:
-    ### Create wheel group
+###### Create wheel group
     - name: Setup 'wheel' group
       group:
         name: wheel
@@ -30,9 +30,9 @@
         create_home: true
         shell: /bin/bash
 
-    #### IMPORTNAT: Make sure to create an SSH key on your local computer.
-    #### This can be done using this command: ssh-keygen -t rsa -b 4096 -C "email_here@domain.com"
-    ### This will setup user, pull local SSH key from local computer, and disable password authentication for root
+###### IMPORTANT: Make sure to create an SSH key on your local computer.
+###### This can be done using this command: ssh-keygen -t rsa -b 4096 -C "email_here@domain.com"
+###### This will setup user, pull local SSH key from local computer, and disable password authentication for root
     - name: Set authorized key for remote user
       ansible.posix.authorized_key:
         user: "{{ create_user }}"
@@ -47,17 +47,14 @@
         line: 'PermitRootLogin prohibit-password'
 
     ### Complete setup of packages for Debian/Ubuntu distros
-    - name: Update apt packages
-      apt:
-        update_cache: yes
-
-    - name: Install all required system packages
+    - name: Update and install all required system packages
       apt:
         name: "{{ sys_packages }}"
         state: latest
+        update_cache: yes
 
-    ### Setup Docker's GPG apt key, Docker CE, Docker Respository, as well as necessary packages to apt
-    ### (i.e. apt-transport-https, ca-certificates, curl, gnupg-agent, software-properities-common).
+###### Setup Docker's GPG apt key, Docker CE, Docker Respository, as well as necessary packages to apt
+###### (i.e. apt-transport-https, ca-certificates, curl, gnupg-agent, software-properities-common).
     - name: Add Docker GPG apt key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -71,8 +68,7 @@
     - name: Install Docker-CE to targeted system
       apt:
         name: docker-ce
-        state: latest
-        update_cache: yes
+        state: present
 
     ### IMPORTANT: Make sure to executable has pip3 since Ansible's module of pip
     ### will jump straight to pip.
@@ -81,7 +77,18 @@
         name: docker
         executable: pip3
 
-    ### Copy, confirm, and setup NTP on distro
+###### Setup Oracle VirtualBox
+#    - name: Install Oracle VirtualBox
+#      apt:
+#        name: virtualbox
+#        state: present
+
+#    - name: Install Virtual Extension Pack for Oracle VirtualBox
+#      apt:
+#        name: virtualbox—ext–pack
+#        state: present
+
+###### Copy, confirm, and setup NTP on distro
     - name: Copy over the NTP configuration
       template:
         src: ntp.conf
@@ -100,7 +107,7 @@
         name: ntp
         state: restarted
 
-    ### Firewall setup
+###### Firewall setup
     - name: UFW - Allow SSH connections
       ufw:
         rule: allow
