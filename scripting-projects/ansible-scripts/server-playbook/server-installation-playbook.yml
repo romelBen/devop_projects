@@ -20,12 +20,13 @@
         line: '%wheel ALL=(ALL) NOPASSWD: ALL'
         validate: '/usr/sbin/visudo -cf %s'
 
-    ### Set created user to wheel group with sudo privilages
-    - name: Create a regular user with sudo privilages to wheel group
+    ### Set created user to wheel group with sudo privileges
+    - name: Create a regular user with sudo privileges to wheel group
       user:
         name: "{{ create_user }}"
         state: present
-        groups: wheel
+        groups:
+          - wheel
         append: true
         create_home: true
         shell: /bin/bash
@@ -46,15 +47,21 @@
         regexp: '^#?PermitRootLogin'
         line: 'PermitRootLogin prohibit-password'
 
-    ### Complete setup of packages for Debian/Ubuntu distros
-    - name: Update and install all required system packages
-      apt:
-        name: "{{ sys_packages }}"
-        state: latest
-        update_cache: yes
+###### PPA Repository Setup
+###### Add a complete set of repositories into the source list to be updated to the latest version.
+###### The only repositories that are up to date are git, ansible, and vagrant. The others will have to be
+###### installed separately.
+    - name: Add stable repositories from PPA to system
+      apt_repository:
+          repo: "{{ item }}"
+      loop:
+        - ppa:ansible/ansible				      # Latest Ansible repo
+        - ppa:git-core/ppa				 	      # Latest git repo
+        - ppa:tiagohillebrandt/vagrant		# Latest Vagrant repo (this is a personal ppa so be cautious)
 
-###### Setup Docker's GPG apt key, Docker CE, Docker Respository, as well as necessary packages to apt
-###### (i.e. apt-transport-https, ca-certificates, curl, gnupg-agent, software-properities-common).
+###### Docker Setup
+###### Setup Docker's GPG key and Docker's repository. It is recommended prior to installation to have
+###### these apps installed: apt-transport-https, ca-certificates, curl, gnupg-agent, and software-properties-common.
     - name: Add Docker GPG apt key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -62,31 +69,90 @@
 
     - name: Add Docker Repository
       apt_repository:
-          repo: deb https://download.docker.com/linux/ubuntu bionic stable
+          repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
           state: present
 
-    - name: Install Docker-CE to targeted system
-      apt:
-        name: docker-ce
+###### Visual Studio Code Setup
+###### Setup Visual Studio Code GPG key and Visual Studio Code's repository. It is recommended prior to installation
+###### to have these apps installed: software-properties-common and apt-transport-https.
+###### IMPORTANT: To sync all your extensions together, I would recommend an extension called "Settings Sync"
+###### this will enable you to move all your settings you currently have to a new workplace.
+    - name: Add VSC GPG apt key
+      apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
         state: present
 
-    ### IMPORTANT: Make sure to executable has pip3 since Ansible's module of pip
-    ### will jump straight to pip.
+    - name: Add VSC Repository
+      apt_repository:
+        repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode $(lsb_release -cs) main
+        state: present
+
+###### Terraform Setup
+###### Setup Terraform GPG key and Terraform's repository.
+    - name: Add Terraform GPG apt key
+      apt_key:
+        url: https://apt.releases.hashicorp.com/gpg
+        state: present
+
+    - name: Add Terraform Repository
+      apt_repository:
+          repo: deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main
+
+###### The Holy Mary of Installing Packages
+###### Complete installation of all the packages for Debian/Ubuntu distros
+    - name: Update and install all system packages [This may take a few minutes so please be patient] ¯\_(ツ)_/¯
+      apt:
+        name: "{{ sys_packages }}"
+        state: latest
+        update_cache: yes
+
+    ### IMPORTANT: There will be an error if you ONLY have pip3 installed
+    ### since Ansible's module of pip will jump straight to pip, not pip3.
     - name: Install Docker module for Python
       pip:
         name: docker
         executable: pip3
 
-###### Setup Oracle VirtualBox
-#    - name: Install Oracle VirtualBox
-#      apt:
-#        name: virtualbox
-#        state: present
+#    - name: Add all extensions over to Visual Studio Code
+#      command: code --install-extensions "{{ item }}"
+#      loop:
+#        - 4ops.terraform
+#        - amazonwebservices.aws-toolkit-vscode
+#        - CoenraadS.bracket-pair-colorizer
+#        - eamodio.gitlens
+#        - golang.go
+#        - johnpapa.winteriscoming
+#        - ms-azuretools.vscode-docker
+#        - ms-kubernetes-tools.vscode-kubernetes-tools
+#        - ms-python.python
+#        - ms-toolsai.jupyter
+#        - rebornix.ruby
+#        - redhat.vscode-yaml
+#        - Shan.code-settings-sync
+#        - shardulm94.trailing-spaces
+#        - streetsidesoftware.code-spell-checker
+#        - vscode-icons-team.vscode-icons
+#        - wingrunr21.vscode-ruby
 
-#    - name: Install Virtual Extension Pack for Oracle VirtualBox
-#      apt:
-#        name: virtualbox—ext–pack
-#        state: present
+##### Copy and execute script of imwheel
+    - name: Run imwheel script
+      script: mouse.sh
+
+#    - name: Transfer imwheel script
+#      copy:
+#        src: mouse.sh
+#        dest: /home/romelben/Documents
+#        mode: 0777
+
+#    - name: Execute the imwheel script configuration
+#      command: sh /home/romelben/Documents/mouse.sh
+
+##### Enable and start Bluetooth services on system
+    - name: Enable and start Bluetooth services on system
+      systemd:
+          name: bluetooth.service
+          enabled: yes
+          state: started
 
 ###### Copy, confirm, and setup NTP on distro
     - name: Copy over the NTP configuration
