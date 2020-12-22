@@ -55,9 +55,17 @@
       apt_repository:
           repo: "{{ item }}"
       loop:
-        - ppa:ansible/ansible				      # Latest Ansible repo
         - ppa:git-core/ppa				 	      # Latest git repo
         - ppa:tiagohillebrandt/vagrant		# Latest Vagrant repo (this is a personal ppa so be cautious)
+        - ppa:teejee2008/ppa              # Latest Timeshift repo (enables snapshot backup capability)
+#        - ppa:videolan/stable-daily      # Latest VLC repo
+
+    # Adds the latest Ansible repo to all distros except Ubuntu 20.04.
+    # As of Dec. 22, 2020, it is still NOT supported.
+    - name: Add Ansible repository only to all distros, EXCEPT 20.04
+      apt_repository:
+          repo: ppa:ansible/ansible
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] != "20")
 
 ###### Node.js Setup
 ###### Setup Node.js's GPG key and repository
@@ -131,28 +139,11 @@
         name: docker
         executable: pip3
 
+###### Installing VSC Extensions            [ NEEDS WORK ]
 #    - name: Add all extensions over to Visual Studio Code
-#      command: code --install-extensions "{{ item }}"
-#      loop:
-#        - 4ops.terraform
-#        - amazonwebservices.aws-toolkit-vscode
-#        - CoenraadS.bracket-pair-colorizer
-#        - eamodio.gitlens
-#        - golang.go
-#        - johnpapa.winteriscoming
-#        - ms-azuretools.vscode-docker
-#        - ms-kubernetes-tools.vscode-kubernetes-tools
-#        - ms-python.python
-#        - ms-toolsai.jupyter
-#        - rebornix.ruby
-#        - redhat.vscode-yaml
-#        - Shan.code-settings-sync
-#        - shardulm94.trailing-spaces
-#        - streetsidesoftware.code-spell-checker
-#        - vscode-icons-team.vscode-icons
-#        - wingrunr21.vscode-ruby
+#      command: code --install-extensions "{{ visual_studio_code_extensions }}"
 
-##### Copy and execute script of imwheel
+###### Copy and execute script of imwheel
     - name: Run imwheel script
       script: mouse.sh
 
@@ -160,12 +151,12 @@
 #      copy:
 #        src: mouse.sh
 #        dest: /home/romelben/Documents
-#        mode: 0777
+#        mode: 0755
 
 #    - name: Execute the imwheel script configuration
 #      command: sh /home/romelben/Documents/mouse.sh
 
-##### Enable and start Bluetooth services on system
+###### Enable and start Bluetooth services on system
     - name: Enable and start Bluetooth services on system
       systemd:
           name: bluetooth.service

@@ -10,8 +10,31 @@ copy_local_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }
 # a specific version, edit the server-installation-playbook script. If you want to update to the latest build,
 # copy and paste the GPG key and include the repository.
 sys_packages: [ 'curl', 'vim', 'git', 'ufw', 'wget', 'aptitude', 'ca-certificates', 'gnupg2', 'software-properties-common', 'htop',
-                'ansible', 'python3-pip', 'apt-transport-https', 'virtualenv', 'bash', 'ntp', 'ntpdate', 'gnupg-agent',
-                'imwheel', 'blueman', 'deepin-terminal', 'docker-ce', 'code', 'terraform', 'vagrant', 'nodejs' ]
+                'ansible', 'python3-pip', 'apt-transport-https', 'virtualenv', 'bash', 'ntp', 'ntpdate', 'gnupg-agent', 'timeshift',
+                'imwheel', 'blueman', 'deepin-terminal', 'docker-ce', 'code', 'terraform', 'vagrant', 'nodejs', 'vlc', 'speedcrunch',
+                'gparted' ]
+
+##### Visual Studio Code Extensions
+# Here lies VSC's extensions that will be installed in VSC. If there is an extension that you
+# would want to support or don't, please input/remove the extension you want.
+#visual_studio_code_extensions:
+#    - 4ops.terraform
+#    - amazonwebservices.aws-toolkit-vscode
+#    - CoenraadS.bracket-pair-colorizer
+#    - eamodio.gitlens
+#    - golang.go
+#    - johnpapa.winteriscoming
+#    - ms-azuretools.vscode-docker
+#    - ms-kubernetes-tools.vscode-kubernetes-tools
+#    - ms-python.python
+#    - ms-toolsai.jupyter
+#    - rebornix.ruby
+#    - redhat.vscode-yaml
+#    - Shan.code-settings-sync
+#    - shardulm94.trailing-spaces
+#    - streetsidesoftware.code-spell-checker
+#    - vscode-icons-team.vscode-icons
+#    - wingrunr21.vscode-ruby
 
 ##### Node.js parameters
 # Set the version of Node.js to install (8.x, 10.x, 12.x, 13.x, etc)
