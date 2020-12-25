@@ -1,0 +1,9 @@
+---
+
+- hosts: loki
+  remote_user: vagrant
+  become: yes
+  vars:
+    docker_users: ["vagrant"]
+  roles:
+    - loki

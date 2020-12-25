@@ -1,0 +1,13 @@
+---
+- name: Setup promtail for Debian
+  include: setup-Debian.yml
+  when: (ansible_os_family == "Debian") and (promtail_install_from_source | bool)
+
+- name: Configure promtail
+  include: configure.yml
+  when: promtail_install_from_source | bool
+
+- name: Ensure promtail is running
+  service:
+    name: promtail
+    state: started

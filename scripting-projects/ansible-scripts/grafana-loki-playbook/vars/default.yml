@@ -1,0 +1,9 @@
+---
+
+### Grafana Loki Setup
+
+# Github repository
+loki_github_repository: https://github.com/grafana/loki
+
+# Network
+loki_docker_network: loki

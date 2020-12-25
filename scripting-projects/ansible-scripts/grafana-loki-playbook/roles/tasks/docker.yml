@@ -1,0 +1,50 @@
+---
+
+- name: LOKI DOCKER | Clone project
+  git:
+    repo: "{{ loki_github_repo }}"
+    dest: /opt/loki
+
+- name: LOKI DOCKER | Manage network
+  docker_network:
+      name: "{{ loki_docker_network }}"
+
+- name: LOKI DOCKER | Manage server
+  docker_container:
+      command: "-config.file=/etc/loki/loki-local-config.yaml"
+      name: loki
+      image: grafana/loki:master
+      state: started
+      recreate: yes
+      ports:
+        - "3100:3100"
+      volumes:
+        - "/opt/loki/docs:/etc/loki"
+      networks:
+        - name: "{{ loki_docker_network }}"
+
+- name: LOKI DOCKER | Manage Promtail
+  docker_container:
+      command: "-config.file=/etc/promtail/promtail-docker-config.yaml"
+      name: promtail
+      image: grafana/promtail:master
+      state: started
+      recreate: yes
+      volumes:
+        - "/opt/loki/docs:/etc/promtail"
+        - "/var/log:/var/log"
+      networks:
+        - name: "{{ loki_docker_network }}"
+
+- name: LOKI DOCKER | Manage Grafana
+  docker_container:
+    env:
+      GF_EXPLORE_ENABLED: "true"
+    name: grafana
+    image: grafana/grafana:master
+    state: started
+    recreate: yes
+    ports:
+      - "3000:3000"
+    networks:
+      - name: "{{ loki_docker_network }}"

@@ -80,7 +80,7 @@
         state: present
       loop:
         # For future reference, {{ ansible_distribution_release }} is identical to the command $(lsb_release -cs).
-        # This is a builtin command in Ansible which will "Gathering Facts" of our distro version, and apply that
+        # This is a builtin command in Ansible which will be "Gathering Facts" of our distro version, and apply that
         # in our parameter {{ ansible_distribution_release }}.
         - deb https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main
         - deb-src https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main
