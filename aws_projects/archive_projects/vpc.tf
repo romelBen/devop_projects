@@ -55,7 +55,7 @@ resource "aws_subnet" "main-private-2" {
   cidr_block = "10.0.5.0/24"
   map_public_ip_on_launch = "false"
   availability_zone = "us-east-1b"
-  tags = { 
+  tags = {
       Name = "main-private-2"
   }
 }
