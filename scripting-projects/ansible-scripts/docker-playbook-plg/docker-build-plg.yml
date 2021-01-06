@@ -1,0 +1,261 @@
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/docker-setup-plg.yml
+
+  tasks:
+##### The following script will install the required packages for a full installation
+##### of Docker, the GPG key (to keep up to date), docker repository, and the Docker CE.
+    - name: Install aptitude using apt
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: yes
+        force_apt_get: yes
+
+    - name: Install required system packages
+      apt:
+        name: {{ item }}
+        state: latest
+        update_cache: yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+    - name: Add Docker GPG apt key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+          repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+          state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        update_cache: yes
+        name: docker-ce
+        state: latest
+
+    ### IMPORTANT: There will be an error if you ONLY have pip3 installed
+    ### since Ansible's module of pip will jump straight to pip, not pip3.
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+        executable: pip3
+
+###### The following script will install Grafana into our system using Docker.
+###### Configuration of the necessary parameters will be added.
+    - name: Load Grafana settings for ARMv7 systems
+      include_vars:
+        file: armv7.yml
+      when: ansible_architecture == 'armv7l'
+
+    - name: Create Grafana folder structure
+      file:
+        path: "{{item}}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      with_items:
+        - "{{grafana_path}}"
+        - "{{grafana_dashboards_path}}"
+        - "{{grafana_etc_path}}"
+      tags:
+        - grafana
+
+    - name: Configure Grafana
+      template:
+        src: grafana.env.j2
+        dest: "{{grafana_etc_path}}/grafana.env"
+        owner: root
+        group: root
+        mode: 0644
+      notify: Restart Grafana service
+      tags:
+        - grafana
+
+    - name: Provision Grafana dashboards
+      copy:
+        src: "{{items}}"
+        dest: "{{grafana_dashboards_path}}"
+        owner: root
+        group: root
+        mode: 0644
+      with_fileglob:
+        - dashboards/*.json
+      tags:
+        - grafana
+        - dashboards
+
+    - name: Create Grafana startup script
+      template:
+        src: docker.grafana.service.j2
+        dest: /etc/systemd/system/docker.grafana.service
+        owner: root
+        group: root
+        mode: 0644
+      notify:
+        - Reload Systemd daemon
+        - Reload Grafana service
+      tags:
+        - grafana
+
+    - name: Force all notified handlers to run at this point
+      meta: flush_handlers
+
+    - name: Start Grafana service
+      service:
+        name: docker.grafana
+        state: started
+        enabled: yes
+      tags:
+        - grafana
+
+    - name: Wait for Grafana service startup
+      uri:
+        url: "http://localhost:{{grafana_docker_http_port}}/login"
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 60
+      delay: 5
+      when: grafana_docker_publish_http_port
+      tags:
+        - grafana
+
+    - name: Get Grafana global users
+      uri:
+        url: "http://localhost:{{grafana_docker_http_port}}/api/org/users"
+        method: GET
+        user: "{{grafana_admin_user}}"
+        password: "{{grafana_admin_password}}"
+        force_basic_auth: yes
+        status_code: 200
+        return_content: yes
+      register: grafana_users_output
+      tags:
+        - grafana
+
+    - name: Add Grafana global users
+      uri:
+        url: "http://localhost:{{grafana_docker_http_port}}/api/admin/users"
+        method: POST
+        user: "{{grafana_admin_user}}"
+        password: "{{grafana_admin_password}}"
+        force_basic_auth: yes
+        headers:
+          Content-Type: application/json
+        body_format: json
+        body:
+          - ["name": "{{item.name}}"]
+          - ["email": "{{item.email}}"]
+          - ["login": "{{item.login}}"]
+          - ["password": "{{item.password}}"]
+        status_code: 200
+      with_items: "{{grafana_users}}"
+      when: item.login not in (grafana_users_output.json | map(attribute='login') | list)
+      tags:
+        - grafana
+
+    - name: Get Grafana datasources
+      uri:
+        url: "http://localhost:{{grafana_docker_http_port}}/api/datasources"
+        method: GET
+        user: "{{grafana_admin_user}}"
+        password: "{{grafana_admin_password}}"
+        force_basic_auth: yes
+        status_code: 200
+        return_content: yes
+      register: grafana_datasources_output
+      tags:
+        - grafana
+
+    - name: Add Grafana datasources
+      uri:
+        url: "http://localhost:{{grafana_docker_http_port}}/api/datasources"
+        method: POST
+        user: "{{grafana_admin_user}}"
+        password: "{{grafana_admin_password}}"
+        force_basic_auth: yes
+        headers:
+          Content-Type: application/json
+        body_format: json
+        body:
+        - ["name":"{{item.database}}"]
+        - ["type":"{{item.type}}"]
+        - ["url":"{{item.url}}"]
+        - ["access":"proxy"]
+        - ["basicAuth":false]
+        - ["database":"{{item.database}}"]
+        - ["user":"{{item.user}}"]
+        - ["password":"{{item.password}}"]
+        status_code: 200
+      with_items: "{{grafana_datasources}}"
+      when: item.database not in (grafana_datasources_output.json | map(attribute='name') | list)
+      tags:
+        - grafana
+
+    - name: Install Grafana plugins
+      command: "docker exec -i docker.grafana.service grafana-cli plugins install {{item}}"
+      args:
+        creates: "{{grafana_data_path}}/plugins/{{item}}"
+      with_items: "{{grafana_plugins}}"
+      notify: Restart Grafana service
+      tags:
+        - grafana
+
+###### The following script will install Loki into our system using Docker.
+###### Configuration of the necessary parameters will be added.
+    - name: LOKI | Manage Docker environment
+      import_tasks: docker.yml
+
+    - name: LOKI DOCKER | Clone project
+      git:
+        repo: "{{ loki_github_repo }}"
+        dest: /opt/loki
+
+    - name: LOKI DOCKER | Manage network
+      docker_network:
+          name: "{{ loki_docker_network }}"
+
+    - name: LOKI DOCKER | Manage server
+      docker_container:
+          command: "-config.file=/etc/loki/loki-local-config.yaml"
+          name: loki
+          image: grafana/loki:master
+          state: started
+          recreate: yes
+          ports:
+            - "3100:3100"
+          volumes:
+            - "/opt/loki/docs:/etc/loki"
+          networks:
+            - name: "{{ loki_docker_network }}"
+
+    - name: LOKI DOCKER | Manage Promtail
+      docker_container:
+          command: "-config.file=/etc/promtail/promtail-docker-config.yaml"
+          name: promtail
+          image: grafana/promtail:master
+          state: started
+          recreate: yes
+          volumes:
+            - "/opt/loki/docs:/etc/promtail"
+            - "/var/log:/var/log"
+          networks:
+            - name: "{{ loki_docker_network }}"
+
+    - name: LOKI DOCKER | Manage Grafana
+      docker_container:
+        env:
+          GF_EXPLORE_ENABLED: "true"
+        name: grafana
+        image: grafana/grafana:master
+        state: started
+        recreate: yes
+        ports:
+          - "3000:3000"
+        networks:
+          - name: "{{ loki_docker_network }}"

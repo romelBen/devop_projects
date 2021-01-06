@@ -1,0 +1,78 @@
+###### In the following script, this will be a Docker setup of Grafana which will install the necessary dependencies,
+###### the apt key and repository, ensure the integrity of Grafana is configured correctly, Ensure the pid directory is present,
+###### ensure permissions are correctly given, and finally running Grafana on boot.
+    - name: Include OS family/distribution specific variables
+      include_vars: "{{ item }}"
+      with_first_round:
+        - "../defaults/{{ ansible_os_family | lower }}-{{ ansible_distribution | lower }}_{{ ansible_distribution_version | lower }}.yml"
+        - "../defaults/{{ ansible_os_family | lower }}-{{ ansible_distribution | lower }}.yml"
+        - "../defaults/{{ ansible_os_family | lower }}.yml"
+
+    - include: validation.yml
+      tags: validation
+
+    - name: Ensure apt dependencies are installed
+      apt:
+        name: "{{ item }}"
+        state: present
+      when: ansible_distribution | lower == 'debian' and grafana_apt_dependencies is defined
+      with: "{{ grafana_apt_dependencies }}"
+
+    - name: Ensure Grafana apt key is present
+      apt_key:
+        url: https://packagecloud.io/gpg.key
+        id: D59097AB
+        state: present
+      tags: [ apt ]
+
+    - name: Ensure Grafana apt repository is present
+      apt_repository:
+        repo: deb https://packagecloud.io/grafana/stable/{{ ansible_os_family | lower }}/ {{ grafana_apt_distribution }} main
+        update_cache: yes
+        state: present
+      tags: [ apt ]
+
+    - name: Ensure Grafana is installed
+      apt:
+        name: grafana
+        state: present
+      tags: installation
+
+    - name: Ensure integrity of Grafana configuration
+      template:
+        src: 'grafana-server.j2'
+        dest: '/etc/default/grafana-server'
+        owner: "{{ grafana_user }}"
+        group: "{{ grafana_group }}"
+        mode: 0644
+      notify: restart grafana
+      tags: configuration
+
+    - name: Ensure Grafana pid directory is present
+      file:
+        path: "{{ grafana_pid_file_dir }}"
+        owner: "{{ grafana_user }}"
+        group: "{{ grafana_group }}"
+        mode: 0755
+        state: directory
+
+    - name: Ensure Grafana directory ownership and permissions
+      path: "{{ item }}"
+      owner: "{{ grafana_user }}"
+      group: "{{ grafana_group }}"
+      mode: 0755
+      state: directory
+      with_items:
+        - "{{ grafana_dir_conf }}"
+        - "{{ grafana_dir_data }}"
+        - "{{ grafana_dir_home }}"
+        - "{{ grafana_dir_log }}"
+        - "{{ grafana_dir_plugins }}"
+        - "{{ grafana_pid_file_dir }}"
+
+    - name: Ensure Grafana is running and enabled to start on boot
+      services:
+        name: grafana-server
+        state: started
+        enabled: yes
+      tags: service
