@@ -30,7 +30,7 @@
 
 - name: Edit Node Exporter Service File
   become: yes
-  blockinfile: 
+  blockinfile:
     path: /etc/systemd/system/nodeexporter.service
     marker: ""
     block: |

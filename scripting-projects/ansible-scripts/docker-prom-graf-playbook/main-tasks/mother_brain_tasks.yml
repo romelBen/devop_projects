@@ -1,0 +1,18 @@
+---
+# task files are included here for prometheus docker
+
+- include_tasks: install_docker.yml
+  tags:
+    - "docker"
+- include_tasks: install_local_node_exporter.yml
+  tags:
+    - "prometheus-exporter"
+- include_tasks: install_alert_manager.yml
+  tags:
+    - "alert_manager"
+- include_tasks: install_prometheus.yml
+  tags:
+  - "prometheus"
+- include_tasks: install_grafana.yml
+  tags:
+    - "grafana"

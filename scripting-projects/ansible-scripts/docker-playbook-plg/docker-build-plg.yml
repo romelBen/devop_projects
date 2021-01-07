@@ -46,10 +46,10 @@
 
 ###### The following script will install Grafana into our system using Docker.
 ###### Configuration of the necessary parameters will be added.
-    - name: Load Grafana settings for ARMv7 systems
-      include_vars:
-        file: armv7.yml
-      when: ansible_architecture == 'armv7l'
+#    - name: Load Grafana settings for ARMv8 systems
+#      include_vars:
+#        file: armv8.yml
+#      when: ansible_architecture == 'armv8l'
 
     - name: Create Grafana folder structure
       file:
@@ -149,10 +149,10 @@
           Content-Type: application/json
         body_format: json
         body:
-          - ["name": "{{item.name}}"]
-          - ["email": "{{item.email}}"]
-          - ["login": "{{item.login}}"]
-          - ["password": "{{item.password}}"]
+          - [name, "{{item.name}}"]
+          - [email, "{{item.email}}"]
+          - [login, "{{item.login}}"]
+          - [password, "{{item.password}}"]
         status_code: 200
       with_items: "{{grafana_users}}"
       when: item.login not in (grafana_users_output.json | map(attribute='login') | list)
@@ -183,19 +183,19 @@
           Content-Type: application/json
         body_format: json
         body:
-        - ["name":"{{item.database}}"]
-        - ["type":"{{item.type}}"]
-        - ["url":"{{item.url}}"]
-        - ["access":"proxy"]
-        - ["basicAuth":false]
-        - ["database":"{{item.database}}"]
-        - ["user":"{{item.user}}"]
-        - ["password":"{{item.password}}"]
+        - [name, "{{item.database}}"]
+        - [type, "{{item.type}}"]
+        - [url, "{{item.url}}"]
+        - [access, proxy]
+        - [basicAuth, false]
+        - [database, "{{item.database}}"]
+        - [user, "{{item.user}}"]
+        - [password, "{{item.password}}"]
         status_code: 200
       with_items: "{{grafana_datasources}}"
       when: item.database not in (grafana_datasources_output.json | map(attribute='name') | list)
       tags:
-        - grafana
+       - grafana
 
     - name: Install Grafana plugins
       command: "docker exec -i docker.grafana.service grafana-cli plugins install {{item}}"
