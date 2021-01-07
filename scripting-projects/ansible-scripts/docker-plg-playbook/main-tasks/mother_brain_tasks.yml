@@ -16,3 +16,6 @@
 - include_tasks: install_grafana.yml
   tags:
     - "grafana"
+- include_tasks: install_loki.yml
+  tags:
+    - "loki"
