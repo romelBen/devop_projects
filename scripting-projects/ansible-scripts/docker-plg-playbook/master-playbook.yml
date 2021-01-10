@@ -10,7 +10,3 @@
   roles:
     - prometheus
     - node_exporter
-
-- hosts: pi_master
-  roles:
-    - node_exporter

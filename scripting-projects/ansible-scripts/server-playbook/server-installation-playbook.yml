@@ -58,6 +58,7 @@
         - ppa:git-core/ppa				 	      # Latest git repo
         - ppa:tiagohillebrandt/vagrant		# Latest Vagrant repo (this is a personal ppa so be cautious)
         - ppa:teejee2008/ppa              # Latest Timeshift repo (enables snapshot backup capability)
+        - ppa:yubico/stable               # Latest Yubico repo following FIDO2 Authorization (uses an External Authenticator to sign into applications especially Linux distros)
 #        - ppa:videolan/stable-daily      # Latest VLC repo
 
     # Adds the latest Ansible repo to all distros except Ubuntu 20.04.
@@ -65,7 +66,7 @@
     - name: Add Ansible repository only to all distros, EXCEPT 20.04
       apt_repository:
           repo: ppa:ansible/ansible
-      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] != "20")
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] != "20")111
 
 ###### Node.js Setup
 ###### Setup Node.js's GPG key and repository
