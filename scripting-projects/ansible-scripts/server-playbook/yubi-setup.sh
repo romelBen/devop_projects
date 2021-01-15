@@ -6,6 +6,10 @@
 mkdir -p ~/.config/Yubico
 pamu2fcfg > ~/.config/Yubico/u2f_keys
 
+## ONLY include if you have a backup yubico key. Plug the 2nd Yubico key and the below line will
+## upload the 2nd Yubico key for redundancy.
+#pamu2fcfg -n >> ~/.config/Yubico/u2f_keys
+
 # Require Yubikey to enter the Linux system
 sudo nano /etc/pam.d/sudo
 sudo sed -i '5 aauth\t required\t pam_u2f.so' /etc/pam.d/sudo
