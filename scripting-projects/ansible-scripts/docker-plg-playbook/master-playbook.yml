@@ -8,5 +8,4 @@
 
 - hosts: pi_clients
   roles:
-    - prometheus
-    - node_exporter
+    - mother_brain_tasks

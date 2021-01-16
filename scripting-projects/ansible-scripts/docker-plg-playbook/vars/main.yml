@@ -55,3 +55,5 @@ prometheus_commandline_args:
 
 prometheus_node_exporter_image: prom/node-exporter
 prometheus_node_exporter_container_name: node_exporter
+
+grafana_docker_image_name: fg2it/grafana-armhf

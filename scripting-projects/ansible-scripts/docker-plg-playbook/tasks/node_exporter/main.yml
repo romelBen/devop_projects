@@ -1,4 +1,5 @@
 ---
+### Node Exporter will be installed locally on the image you will be installing on
 - name: Start node_exporter container
   docker_container:
     name: "{{ prometheus_node_exporter_container_name }}"
