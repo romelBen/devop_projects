@@ -1,17 +1,14 @@
 ---
-- name: LOKI | Manage Docker environment
-  import_tasks: docker.yml
-
-- name: LOKI DOCKER | Clone project
+- name: Clone project
   git:
     repo: "{{ loki_github_repo }}"
     dest: /opt/loki
 
-- name: LOKI DOCKER | Manage network
+- name: Manage network
   docker_network:
       name: "{{ loki_docker_network }}"
 
-- name: LOKI DOCKER | Manage server
+- name: Manage server
   docker_container:
       command: "-config.file=/etc/loki/loki-local-config.yaml"
       name: loki
@@ -25,7 +22,7 @@
       networks:
         - name: "{{ loki_docker_network }}"
 
-- name: LOKI DOCKER | Manage Promtail
+- name: Manage Promtail
   docker_container:
       command: "-config.file=/etc/promtail/promtail-docker-config.yaml"
       name: promtail
@@ -38,7 +35,7 @@
       networks:
         - name: "{{ loki_docker_network }}"
 
-- name: LOKI DOCKER | Manage Grafana
+- name: Manage Grafana
   docker_container:
     env:
       GF_EXPLORE_ENABLED: "true"

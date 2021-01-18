@@ -1,11 +1,10 @@
 ---
-- hosts: all
-  gather_facts: yes
-
 - hosts: pi_clients
+  become: yes
   roles:
+    - docker
     - grafana
-
-- hosts: pi_clients
-  roles:
-    - mother_brain_tasks
+    - prometheus
+    - node_exporter
+    - loki
+    - alert_manager

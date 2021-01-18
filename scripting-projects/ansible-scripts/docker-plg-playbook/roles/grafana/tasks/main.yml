@@ -22,12 +22,14 @@
   become: yes
   docker_container:
     name: "{{ grafana_container_name }}"
-    hostname: "{{ grafana_container_name }}"
     image: "{{ grafana_image }}"
+    hostname: "{{ grafana_container_name }}"
+    state: started
+    pull: true
+    env: "{{ grafana_environment_variables }}"
+    volumes: "{{ grafana_volume_mountinstructions }}"
     published_ports:
       - 3000:3000
-    volumes: "{{ grafana_volume_mountinstructions }}"
     links:
       - "{{ prometheus_container_name }}"
-    env: "{{ grafana_environment_variables }}"
     restart_policy: always

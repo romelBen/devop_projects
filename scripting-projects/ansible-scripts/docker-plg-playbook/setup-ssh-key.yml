@@ -1,0 +1,18 @@
+---
+### This script is important to connect to your Raspberry Pi since it will have issues connecting
+### without no secure password. This will create your SSH directory and copy your localhost private
+### key over to your Raspberry Pi's.
+
+- hosts: pi_clients
+  tasks:
+    - name: Create an SSH directory
+      ansible.builtin.file:
+        path: ~/.ssh
+        state: directory
+        mode: '0700'
+
+    - name: Set authorized key from localhost
+      authorized_key:
+        user: pi
+        state: present
+        key: "{{ lookup('file', '/home/$USER/.ssh/id_rsa.pub') }}"
