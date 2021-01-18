@@ -1,0 +1,15 @@
+####### Prometheus Variables #############
+### These are the parameters to be used for Prometheus Docker build
+prometheus_image: prom/prometheus
+prometheus_volume_source: /srv/prometheus-data
+prometheus_volume_target: /prometheus-data
+prometheus_volume_mountinstruction: "{{prometheus_volume_source}}:{{ prometheus_volume_target }}"
+prometheus_container_name: prometheus
+prometheus_rule_file_name: rule_file.yml
+prometheus_rule_file_location: "{{ prometheus_volume_target }}/{{ prometheus_rule_file_name }}"
+prometheus_commandline_args:
+  config.file: "{{ prometheus_volume_target }}/prometheus.yml"
+  storage.tsdb.path: "{{ prometheus_volume_target}}/data"
+
+prometheus_node_exporter_image: prom/node-exporter
+prometheus_node_exporter_container_name: node_exporter
