@@ -1,0 +1,42 @@
+---
+############ Grafana Variables ##########
+### YOU SHOULD OVERWRITE THIS BEFORE YOUR FIRST RUN
+# Running the role a second time won't overwrite the credentials.
+# You'll have to do it manually in the web interface of Grafana
+##### Grafana variables
+grafana_docker_image_version: latest
+grafana_docker_image_name: grafana/grafana
+grafana_docker_publish_http_port: true
+grafana_docker_http_port: 3000
+grafana_docker_run_options: "--volume={{grafana_data_path}}:/var/lib/grafana --volume={{grafana_dashboards_path}}:/dashboards"
+grafana_docker_restart_container: always
+
+grafana_admin_user: admin
+grafana_admin_password: admin
+grafana_environment_variables:
+  GF_SECURITY_ADMIN_USER: "{{ grafana_admin_user }}"
+  GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_admin_password }}"
+
+grafana_path: /opt/grafana
+grafana_dashboards_path: "{{grafana_path}}/dashboards"
+grafana_data_path: "{{grafana_path}}/data"
+grafana_etc_path: "{{grafana_path}}/etc"
+
+grafana_config_env: []
+grafana_datasources: []
+grafana_plugins: []
+grafana_users: []
+
+### Grafana Container Variables for Volume Setup
+grafana_container_name: grafana
+grafana_image: grafana/grafana
+grafana_volume_folder: /srv/grafana
+grafana_volume_storage_source: "{{ grafana_volume_folder }}/storage"
+grafana_volume_storage_target: /var/lib/grafana
+grafana_volume_storage_mountinstruction: "{{ grafana_volume_storage_source }}:{{ grafana_volume_storage_target }}"
+grafana_volume_datasource_source: /srv/grafana/datasources.yml
+grafana_volume_datasource_target: /etc/grafana/provisioning/datasources/datasources.yml
+grafana_volume_datasource_mountinstruction: "{{ grafana_volume_datasource_source}}:{{ grafana_volume_datasource_target }}"
+grafana_volume_mountinstructions:
+  - "{{ grafana_volume_storage_mountinstruction }}"
+  - "{{ grafana_volume_datasource_mountinstruction }}"
