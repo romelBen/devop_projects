@@ -1,0 +1,92 @@
+---
+- name: Install Grafana python api clients
+  pip:
+    name: "grafana_api_client"
+    executable: pip3
+
+- name: Check api status and retry until is available
+  uri:
+    url: "http://127.0.0.1:{{grafana_port}}/api/admin/settings"
+    method: GET
+    user: admin
+    password: "{{admin_pass}}"
+    force_basic_auth: yes
+    status_code: 200
+  register: httpresponse
+  until: httpresponse.status == 200
+  retries: 10
+  delay: 20
+
+- name: Create organizations
+  gf_org:
+    name: "{{item.name}}"
+    gf_password: "{{admin_pass}}"
+  with_items: "{{orgs}}"
+  run_once: "{{run_once_post_install | default(omit)}}"
+  loop_control:
+    label: "{{item.name}}"
+
+- name: Create datasource
+  gf_datasource:
+    name: "{{item.1.name}}"
+    type: "{{item.1.type}}"
+    url: "{{item.1.url}}"
+    database: "{{item.1.database}}"
+    jsondata: "{{item.1.jsondata | default(omit) }}"
+    securejsondata: "{{item.1.securejsondata | default(omit) }}"
+    basicauth: "{{item.1.basicauth| default(omit)}}"
+    basicauthuser: "{{item.1.basicauthuser| default(omit)}}"
+    basicauthpassword: "{{item.1.basicauthpassword| default(omit)}}"
+    user: "{{item.1.user | default(omit)}}"
+    password: "{{item.1.password | default(omit)}}"
+    org: "{{item.0.name}}"
+    gf_password: "{{admin_pass}}"
+  with_subelements:
+    - "{{orgs}}"
+    - datasources
+  run_once: "{{run_once_post_install | default(omit)}}"
+  loop_control:
+      label: "{{item.1.name}}"
+
+- name: Create notifications
+  gf_notifications:
+    name: "{{item.1.name}}"
+    notification_type: "{{item.1.type}}"
+    org: "{{item.0.name}}"
+    settings: "{{item.1.settings | to_json | default(omit)}}"
+    gf_password: "{{admin_pass}}"
+  with_subelements:
+    - "{{orgs}}"
+    - notifications
+  run_once: "{{run_once_post_install | default(omit)}}"
+  loop_control:
+      label: "{{item.1.name}}"
+
+- name: Create dashboards with templates
+  gf_dashboard:
+    name: "{{item.1.name}}"
+    jsondata: "{{lookup('template',item.1.template,convert_data=False) | from_json }}"
+    org: "{{item.0.name}}"
+    gf_password: "{{admin_pass}}"
+    overwrite: true
+  with_subelements:
+    - "{{orgs}}"
+    - dashboards
+  run_once: "{{run_once_post_install | default(omit)}}"
+  when: item.1.template is defined
+  loop_control:
+    label: "{{item.1.name}}"
+
+- name: Create dashboards with files
+  gf_dashboard:
+    name: "{{item.1.name}}"
+    jsondata: "{{lookup('file',item.1.file) | from_json }}"
+    org: "{{item.0.name}}"
+    gf_password: "{{admin_pass}}"
+  with_subelements:
+    - "{{orgs}}"
+    - dashboards
+  run_once: "{{run_once_post_install | default(omit)}}"
+  when: item.1.file is defined
+  loop_control:
+      label: "{{item.1.name}}"
