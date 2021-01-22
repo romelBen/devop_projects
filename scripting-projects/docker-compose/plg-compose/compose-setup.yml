@@ -1,0 +1,15 @@
+---
+- hosts: pi_clients
+  become: yes
+  tasks:
+    - name: Copy Docker Compose files
+      copy:
+        src: /home/romelben/Documents/infrastructure_projects/scripting-projects/docker-compose/plg-compose
+        dest: $HOME
+
+# Use the files parameter to use multiple docker-compose.yml files
+    - name: Deploy Docker Compose stack
+      docker_compose:
+        project_src: $HOME/plg-compose/
+        files:
+        - docker-compose.yml

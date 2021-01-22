@@ -1,3 +1,6 @@
+### This Dockerfile allows anyone to deploy the stack to multiple containers
+### with Docker Swarm.
+### This will create 5 containers: prometheus, node exporter, alert manager, cadvisor, and grafana.
 version: '3'
 
 volumes:
