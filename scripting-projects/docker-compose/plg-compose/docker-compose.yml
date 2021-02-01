@@ -88,7 +88,7 @@ services:
         condition: on-failure
 #      labels:
 #        - "traefik.enable=true" # Enable traefik on itself to view dashboard and assign subdomain to view it
-#        - "traefik.http.routers.api.rule=Host(`web.eos-helios-selene.com`)"
+#        - "traefik.http.routers.api.rule=Host(`<enter URL here>`)"
 #        - "traefik.docker.network=traefik"
 #        - "traefik.http.middlewares.my-basic-auth.basicauth.users=traefik:$$apr1$$SnHDtk1N$$cpc7xSXXrMVnPYdF01WdC0"
 #        - "traefik.http.services.prometheus.loadbalancer.server.port=8082"
@@ -252,7 +252,7 @@ services:
     labels:
       - "traefik.docker.network=traefik"
       - "traefik.enable=true"
-      - "traefik.http.routers.jenkins.rule=Host(`jenkins.eos-helios-selene.com`)"
+      - "traefik.http.routers.jenkins.rule=Host(`<enter URL here>`)"
       - "traefik.frontend.entryPoints=http,https"
 
 # 8TH CONTAINER
@@ -273,7 +273,7 @@ services:
     labels:
       - "traefik.http.routers.nextcloud.middlewares=nextcloud,nextcloud_redirect"
       - "traefik.http.routers.nextcloud.tls.certresolver=myresolver"
-      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.eos-helios-selene.com`)"
+      - "traefik.http.routers.nextcloud.rule=Host(`<enter URL here>`)"
 #      - traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://mydomain.com
 #      - traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' mydomain.com *.mydomain.net
 #      - traefik.http.middlewares.nextcloud.headers.stsSeconds=155520011
@@ -289,7 +289,7 @@ services:
       - NEXTCLOUD_ADMIN_USER=admin
       - NEXTCLOUD_ADMIN_PASSWORD=adminpass
       - REDIS_HOST=redis
-      - NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.eos-helios-selene.com
+      - NEXTCLOUD_TRUSTED_DOMAINS=<enter URL here>
       - TRUSTED_PROXIES=172.18.0.0/16
     volumes:
       - ./data/volumes/nextcloud/html:/var/www/html
@@ -306,7 +306,7 @@ services:
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_MULTIPLE_DATABASES=sonarqube, nextcloud
+      - POSTGRES_MULTIPLE_DATABASES=nextcloud
     volumes:
       - /././././././plg-compose/scripts/multiple-postgre-db-creation.sh:/docker-entrypoint-initdb.d
       - ./data/volumes/postgresql:/var/lib/postgresql/
@@ -351,7 +351,7 @@ services:
     labels:
       # Frontend
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`portainer.eos-helios-selene.com`)"
+      - "traefik.http.routers.frontend.rule=Host(`<enter URL here>`)"
       - "traefik.http.routers.frontend.entrypoints=websecure"
       - "traefik.http.services.frontend.loadbalancer.server.port=9000"
       - "traefik.http.routers.frontend.service=frontend"
@@ -417,7 +417,7 @@ services:
 #      - sonarqube_data:/opt/sonarqube/data
 #    labels:
 #      - "traefik.enable=true"
-#      - "traefik.http.routers.sonarqube.rule=Host(`sonar.eos-helios-selene.com`)"
+#      - "traefik.http.routers.sonarqube.rule=Host(`<enter URL here>`)"
 #      - "traefik.http.routers.sonarqube.entrypoints=websecure"
 #      - "traefik.http.routers.sonarqube.tls.certresolver=omega_httpchallenge"
 
@@ -430,7 +430,7 @@ services:
 #    labels:
 #      - traefik.enable=true
 #      - traefik.http.routers.jellyfin.entryPoints=secure # Entry point where Jellyfin is accessible via a specific port
-#      - traefik.http.routers.jellyfin.rule=Host(`music.eos-helios-selene.com`)
+#      - traefik.http.routers.jellyfin.rule=Host(`<enter URL here>`)
 #      - traefik.http.routers.network.entrypoints=traefik
 #    container_name: jellyfin
 #    user: 1000:1000
