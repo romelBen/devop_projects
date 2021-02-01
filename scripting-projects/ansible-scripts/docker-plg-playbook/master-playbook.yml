@@ -3,8 +3,8 @@
   become: yes
   roles:
     - docker
-    - grafana
-    - prometheus
-    - node_exporter
-    - loki
-    - alert_manager
+#    - grafana
+#    - prometheus
+#    - node_exporter
+#    - loki
+#    - alert_manager
