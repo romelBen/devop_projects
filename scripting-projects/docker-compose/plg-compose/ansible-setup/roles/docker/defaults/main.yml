@@ -28,6 +28,7 @@ required_packages:
 # Packages to install with pip
 pip_install_packages:
   - docker-compose
+  - jsondiff
 
 ########## Raspberry Pi Setup for User ############
 created_user: romelben
