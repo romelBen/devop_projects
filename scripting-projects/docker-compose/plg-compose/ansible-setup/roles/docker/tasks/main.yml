@@ -30,7 +30,7 @@
 
 - name: Create an SSH directory
   file:
-    path: ~/"{{ created_user }}"/.ssh
+    path: /$HOME/"{{ created_user }}"/.ssh
     state: directory
     mode: '0700'
 
