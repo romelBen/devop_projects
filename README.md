@@ -41,8 +41,8 @@ Directory: [scripting-projects](https://github.com/romelBen/devop_projects/tree/
 
 ## Ansible Projects
 Directory: [ansible-scripts](https://github.com/romelBen/devop_projects/tree/master/scripting-projects/ansible-scripts)
-- Directory file: server-playbook -- Script to install all necessary packages in Debian/Ubuntu distros.
-- Directory file: docker-compose/plg-compose -- Script to install Grafana + Prometheus + node_exporter (plugin) on a Raspberry Pi 4
+- Script to install all necessary packages in Debian/Ubuntu distros.
+- Script to install Grafana + Prometheus + node_exporter (plugin) on a Raspberry Pi 4
 
 ## Currently working on:
 - Working on Ansible scripts to setup Debian/Ubuntu servers with packages (STATUS: Almost done)
