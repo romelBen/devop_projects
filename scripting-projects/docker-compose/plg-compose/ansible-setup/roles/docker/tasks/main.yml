@@ -16,14 +16,13 @@
     state: present
     regexp: '^%wheel'
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-    validate: '/usr/sbin/visudo -cf %s'
+    validate: /usr/sbin/visudo -cf %s
 
 - name: Create a new regular user with sudo privileges
   user:
     name: "{{ created_user }}"
     state: present
-    groups:
-      - wheel
+    group: wheel
     append: true
     create_home: true
     shell: /bin/bash
@@ -77,7 +76,7 @@
     name: "docker-ce={{ docker_version }}"
     state: present
     force: true
-    install_recommends: "{{ docker_install_recommends }}"
+    install_recommend: "{{ docker_install_recommends }}"
 
 # Shim for Docker 18.09.0 on Debian Stretch.
 - import_tasks: docker-1809-shim.yml

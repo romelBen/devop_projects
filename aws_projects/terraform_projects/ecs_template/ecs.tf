@@ -1,4 +1,4 @@
-resource "aws_ecs_clsuter" "web-cluster" {
+resource "aws_ecs_cluster" "web-cluster" {
     name                    = var.cluster_name
     capacity_providers      = [aws_ecs_capacity_provider.ecs-web.name]
     tags = {

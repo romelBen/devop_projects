@@ -23,6 +23,7 @@ required_packages:
   - libc-dev
   - make
   - curl
+#  - firewalld
 
 ######### Pip Setup Variables ##########
 # Packages to install with pip
@@ -33,3 +34,6 @@ pip_install_packages:
 ########## Raspberry Pi Setup for User ############
 created_user: romelben
 copy_local_key: "{{ lookup('file', '/home/$USER/.ssh/id_rsa.pub') }}"
+
+########## FirewallD Variables ##########
+allowed_ssh_networks:
