@@ -1,0 +1,23 @@
+__pycache__
+ .pytest_cache
+ .coverage
+.DS_Store
+.idea
+.idea/*
+.vagrant
+.vscode/*
+.vscode/settings.json
+*.db
+*.iml
+*.mo
+*.pyc
+*.pyo
+*.ipynb
+.ipynb_checkpoints
+*.codekit
+*.log
+*.swp
+*.profile
+*.diff
+*.tar.gz
+terraform/terraform.tfvarsls

@@ -1,0 +1,189 @@
+body {
+    background-color: #F6F6F6;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 920px;
+}
+
+header {
+    align-items: center;
+    background-color: #F3F3FF;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+header .header a {
+    color: inherit;
+    text-decoration: none;
+}
+
+header .header {
+    font-size: 42px;
+}
+
+header .account {
+    font-size: .8em;
+}
+
+.login {
+    text-align: center;
+}
+
+.login table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+.login .errors {
+    color: #FF0000;
+    font-size: .8em;
+}
+
+.container {
+    background-color: #FFF;
+    padding-bottom: 20px;
+}
+
+.content {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.post-form {
+    margin: 20px;
+}
+
+.post-form .post-header {
+    margin-bottom: 5px;
+}
+
+.post-form .post-subheader {
+    color: #666;
+    font-size: .6em;
+    font-style: italic;
+}
+
+.post-form form.message textarea {
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.posts-list .post {
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #CCC;
+    position: relative;
+}
+
+.posts-list .post .left, .posts-list .post .right {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.posts-list .post .left {
+    width: 32px;
+}
+
+.posts-list .post .avatar img {
+    border-radius: 2px 10px 2px;
+    height: 32px;
+    width: 32px;
+}
+
+.posts-list .post .header .username {
+    font-weight: bold;
+}
+
+.posts-list .post .header .date {
+    color: #666;
+    font-weight: 100;
+    font-size: .6em;
+}
+
+.posts-list .post .message {
+    margin-top: 10px;
+}
+
+.posts-list .post .interactions {
+    color: #666;
+    display: flex;
+    font-weight: bold;
+}
+
+.posts-list .post .interactions a {
+    color: inherit;
+}
+
+.posts-list .post .interactions div {
+    margin-right: 15px;
+    margin-top: 5px;
+}
+
+.posts-list .post .interactions form {
+    display: inline;
+}
+
+.posts-list .post .interactions span:before {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: auto;
+}
+
+.posts-list .post .delete {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.posts-list .post .delete a {
+    color: #666;
+}
+
+.posts-list .post-replies {
+    margin-left: 52px;
+}
+
+.posts-list .note {
+    padding: 10px;
+    text-align: center;
+}
+
+.button {
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    padding: 5px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color .25s;
+}
+
+.button:hover {
+    background-color: #22AEDC;
+}
+
+.signup {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.signup label {
+    display: block;
+    font-weight: bold;
+}
+
+.signup span.helptext, .signup ul {
+    color: #666;
+    display: block;
+    font-size: .6em;
+}

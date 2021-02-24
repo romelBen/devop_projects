@@ -1,0 +1,4 @@
+
+.icon-heart-empty:before { content: '\e800'; } /* '' */
+.icon-chat-alt:before { content: '\e801'; } /* '' */
+.icon-cancel-circled-outline:before { content: '\e802'; } /* '' */
