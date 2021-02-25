@@ -7,6 +7,12 @@ resource "aws_alb" "alb" {
   subnets            = module.vpc.public_subnets
   security_groups    = [aws_security_group.alb-sg.id]
 
+  access_logs {
+    bucket    = var.bucket_prefix
+    prefix    = "prod-access-logs"
+    enabled   = true
+  }
+
   tags = {
     Environment = "prod"
     CreatedBy   = "romelben"

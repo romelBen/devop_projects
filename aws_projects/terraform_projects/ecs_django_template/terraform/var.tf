@@ -35,11 +35,11 @@ variable "rds_instance_class" {
 }
 
 ######## These are your S3 variables #########
-# This will be the unique bucket name for the Django website
+# This will be the unique bucket name for access logs
 variable "bucket_prefix" {
   type          = string
   description   = "Creates a unqiue bucket name beginning with the specified prefix"
-  default       = ""
+  default       = "ruby-access-logs"
 }
 
 # This is if you want to enable versioning on the bucket.
