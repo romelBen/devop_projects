@@ -1,6 +1,6 @@
 # Here is the necessary instance role that will be necessary when buidling your image on ECS
 resource "aws_iam_role" "ecs-instance-role" {
-    name                = "bevy-ec2-instance-role"
+    name                = "ec2-instance-role"
     assume_role_policy  = file("policies/ecs-role.json")
 }
 

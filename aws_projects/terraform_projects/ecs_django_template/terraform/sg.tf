@@ -43,13 +43,6 @@ resource "aws_security_group" "alb-sg" {
         cidr_blocks     = ["0.0.0.0/0"]
     }
 
-    ingress {
-        from_port       = 8000
-        to_port         = 8000
-        protocol        = "tcp"
-        cidr_blocks     = ["0.0.0.0/0"]
-    }
-
     egress {
         from_port       = 0
         to_port         = 0
@@ -62,26 +55,12 @@ resource "aws_security_group" "alb-sg" {
     }
 }
 
-### Bevy security group which has the ALB Security Group attached for
-### HTTP/HTTPS (80 & 443) connection is attached for port 22.
-resource "aws_security_group" "bevy-sg" {
-    name                = "ecs-bevy-sg"
+### Security group which has the ALB Security Group attached for
+### port support for AWS ECS.
+resource "aws_security_group" "ecs-sg" {
+    name                = "ecs-sg"
     description         = "Allow SSH and Internet traffic through ALB"
     vpc_id              = data.aws_vpc.main.id
-
-    ingress {
-        from_port       = 80
-        to_port         = 80
-        protocol        = "tcp"
-        security_groups = [aws_security_group.alb-sg.id]
-    }
-
-    ingress {
-        from_port       = 443
-        to_port         = 443
-        protocol        = "tcp"
-        security_groups = [aws_security_group.alb-sg.id]
-    }
 
     ingress {
         from_port       = 22
@@ -105,7 +84,7 @@ resource "aws_security_group" "bevy-sg" {
     }
 
     tags = {
-        Name = "bevy-sg"
+        Name = "ecs-sg"
     }
 }
 
@@ -119,7 +98,7 @@ resource "aws_security_group" "rds-postgresql-sg" {
         from_port       = 5432
         to_port         = 5432
         protocol        = "tcp"
-        security_groups = [aws_security_group.bevy-sg.id]
+        security_groups = [aws_security_group.ecs-sg.id]
     }
 
     egress {
@@ -127,5 +106,9 @@ resource "aws_security_group" "rds-postgresql-sg" {
         to_port         = 0
         protocol        = "-1"
         cidr_blocks     = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "rds-postgre-sg"
     }
 }

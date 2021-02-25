@@ -21,3 +21,5 @@ __pycache__
 *.diff
 *.tar.gz
 terraform/terraform.tfvarsls
+terraform/.terraform.tfstate.lock.info
+terraform/.terraform.lock.hcl

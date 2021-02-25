@@ -8,9 +8,9 @@ resource "aws_ecs_cluster" "web-cluster" {
 }
 
 resource "aws_ecs_capacity_provider" "ecs-web" {
-    name                    = "bevy-capacity-provider"
+    name                    = "capacity-provider"
     auto_scaling_group_provider {
-        auto_scaling_group_arn          = aws_autoscaling_group.bevy-asg.arn
+        auto_scaling_group_arn          = aws_autoscaling_group.ecs-asg.arn
         managed_termination_protection  = "ENABLED"
 
         managed_scaling {
@@ -49,10 +49,10 @@ resource "aws_ecs_task_definition" "ecs-task-definition" {
 }
 
 resource "aws_ecs_service" "service" {
-    name                    = "bevy-web-service"
+    name                    = "web-service"
     cluster                 = aws_ecs_cluster.web-cluster.id
     task_definition         = aws_ecs_task_definition.ecs-task-definition.arn
-    depends_on              = [aws_alb_listener.bevy-alb-listener-secured]
+    depends_on              = [aws_alb_listener.alb-listener-secured]
     desired_count           = 4
 
     ordered_placement_strategy {
@@ -61,7 +61,7 @@ resource "aws_ecs_service" "service" {
     }
 
     load_balancer {
-        target_group_arn    = aws_alb_target_group.bevy-alb-target-group.arn
+        target_group_arn    = aws_alb_target_group.alb-target-group.arn
         container_name      = "nginx"
         container_port      = 80
     }

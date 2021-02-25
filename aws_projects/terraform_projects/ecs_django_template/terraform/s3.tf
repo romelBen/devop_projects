@@ -13,7 +13,7 @@ module "s3-bucket" {
   }
 
   tags = {
-      Name        = "bevy project"
+      Name        = "Prod project"
       Environment = "Dev"
   }
 }

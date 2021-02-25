@@ -1,5 +1,5 @@
 output "alb_dns" {
-    value   = aws_alb.bevy-alb.dns_name
+    value   = aws_alb.alb.dns_name
 #   value   = module.alb.this_lb_dns_name
 }
 

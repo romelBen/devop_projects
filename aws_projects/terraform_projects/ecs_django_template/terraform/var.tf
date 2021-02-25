@@ -80,5 +80,5 @@ variable "ngnix_docker_image" {
 ####### Input URL of ALLOWED_HOSTS in Django's settings ############
 variable "allowed_hosts" {
   description = "Domain name for allowed hosts"
-  default     = "www.rubynube.org"
+  default     = ".rubynube.org"
 }
