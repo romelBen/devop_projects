@@ -1,6 +1,7 @@
 [
   {
     "name": "django-app",
+    "networkMode": "bridge",
     "image": "${django_docker_image}",
     "cpu": 10,
     "memory": 256,

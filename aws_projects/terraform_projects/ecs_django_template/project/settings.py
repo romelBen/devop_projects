@@ -33,7 +33,6 @@ DEBUG = False   # Sent to production
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -147,35 +146,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'project/theme/js'),
     os.path.join(BASE_DIR, 'project/theme/static'),
 ]
-
-### We need to use boto3 with django-storages to push the static files to S3
-### This needs to be worked or the website will load with error 404 on http,
-### css, and js.
-"""
-STATIC_S3 = os.getenv('STATIC_S3') == 'TRUE'
-
-if STATIC_S3:
-    # AWS Settings
-    AWS_ACCESS_KEY          = os.getenv('AWS_ACCESS_KEY')
-    AWS_SECRET_ACCESS_KEY   = os.getenv('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET      = os.getenv('AWS_STORAGE_BUCKET')
-    AWS_DEFAULT_ACL         = "public-read"
-    AWS_S3_CUSTOM_DOMAIN    = f'{AWS_STORAGE_BUCKET}.s3.amazonaws.com'
-    AWS_S3_OBJECT_PARAMETER = {'CacheControl': 'max-age=86400'}
-    # S3 Static Settings
-    AWS_LOCATION            = 'static'
-    STATIC_URL              = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
-    STATICFILES_STORAGE     = 'storages.backends.s3boto3.S3Boto3Storage'
-else
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, STATIC_URL.strip('/'))
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'project/theme/css'),
-    os.path.join(BASE_DIR, 'project/theme/js'),
-    os.path.join(BASE_DIR, 'project/theme/static'),
-]
-"""
 
 LOGOUT_REDIRECT_URL = '/'
 

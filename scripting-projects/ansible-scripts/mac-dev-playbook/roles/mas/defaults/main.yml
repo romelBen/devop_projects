@@ -1,0 +1,6 @@
+---
+
+### Installs App Store apps with mas-cli. I don't use this much but can be used towards your
+### environment.
+
+mas_apps: []

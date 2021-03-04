@@ -9,3 +9,4 @@
 .vscode/*
 inventory
 .env
+image-hub/packer-images/golden-image/varaibles.json

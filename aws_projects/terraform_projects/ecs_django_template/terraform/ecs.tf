@@ -39,7 +39,6 @@ data "template_file" "ecs-containers" {
 resource "aws_ecs_task_definition" "ecs-task-definition" {
     family                  = "django-app"
     container_definitions   = data.template_file.ecs-containers.rendered
-    network_mode            = "bridge"
     depends_on              = [module.rds]
 
     volume {

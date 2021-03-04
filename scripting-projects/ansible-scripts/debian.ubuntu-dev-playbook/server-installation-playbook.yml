@@ -114,16 +114,17 @@
         repo: deb [arch=amd64] https://packages.microsoft.com/repos/code stable main
         state: present
 
-###### Terraform Setup
-###### Setup Terraform GPG key and repository.
-    - name: Add Terraform GPG apt key
+###### Packer & Terraform Setup
+###### Setup Packer & Terraform GPG key and repository.
+    - name: Add Packer & Terraform GPG apt key
       apt_key:
         url: https://apt.releases.hashicorp.com/gpg
         state: present
 
-    - name: Add Terraform Repository
+    - name: Add Packer & Terraform Repository
       apt_repository:
-          repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
+        repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
+
 
 ###### The Holy Mary of Installing Packages #######
 ###### Complete installation of all the packages for Debian/Ubuntu distros
