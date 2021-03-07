@@ -1,5 +1,0 @@
----
-- hosts: pi_clients
-  become: yes
-  roles:
-    - docker
